@@ -88,7 +88,7 @@
       radial-gradient(ellipse 60% 40% at 100% 100%, rgba(201,169,97,0.04), transparent 60%);
   }
 
-  .app { position: relative; z-index: 1; width: 100%; padding: 0 22px 40px; min-height: 100vh; min-height: 100dvh; padding-top: env(safe-area-inset-top, 0px); }
+  .app { position: relative; z-index: 1; width: 100%; max-width: 480px; margin: 0 auto; padding: 0 22px 40px; min-height: 100vh; min-height: 100dvh; padding-top: env(safe-area-inset-top, 0px); }
 
   /* Header */
   .header {
@@ -267,7 +267,10 @@
   /* ----- Session view — full-screen overlay ----- */
   .session-view {
     display: none;
-    position: fixed; inset: 0;
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
     flex-direction: column;
     background: var(--bg);
     z-index: 20; overflow: hidden;
