@@ -1,0 +1,1853 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1E3050" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>FASEA Exam Flip Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #182B45;
+    --bg-2: #1E3254;
+    --surface: #243B65;
+    --surface-2: #2C4878;
+    --surface-border: rgba(255,255,255,0.09);
+    --cream: #FBE8D8;
+    --cream-2: #F4D9C4;
+    --cream-text: #0F1E3D;
+    --cream-muted: #5a6a85;
+    --accent: #E85D3B;
+    --accent-2: #F26B47;
+    --gold: #C9A961;
+    --green: #4ade80;
+    --green-2: #22c55e;
+    --red: #ef4444;
+    --red-2: #dc2626;
+    --text: #F0F4FF;
+    --text-muted: #9AAECE;
+    --text-faint: #6B85A8;
+    --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans: 'Manrope', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow-1: 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-2: 0 10px 30px rgba(0,0,0,0.35);
+    --font-scale: 1.45;
+  }
+
+  /* Light mode */
+  body.light {
+    --bg: #F4F0E8;
+    --bg-2: #ECE5D8;
+    --surface: #FFFFFF;
+    --surface-2: #FBF7F0;
+    --surface-border: rgba(15,30,61,0.08);
+    --text: #0F1E3D;
+    --text-muted: #5a6a85;
+    --text-faint: #8a9bb8;
+  }
+
+  /* Large text */
+  body.text-large { --font-scale: 1.7; }
+
+  /* ── Responsive: desktop/laptop (fine pointer + wide screen) ── */
+  @media (min-width: 600px) and (pointer: fine) {
+    :root { --font-scale: 1.15; }
+    .hero h1 { font-size: calc(42px * var(--font-scale)); }
+    body.text-large { --font-scale: 1.35; }
+  }
+  /* ── Mobile: touch device OR narrow viewport keeps large scale ── */
+  @media (pointer: coarse), (max-width: 599px) {
+    :root { --font-scale: 1.45; }
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  html { background: var(--bg); }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    font-size: calc(17px * var(--font-scale));
+    line-height: 1.6;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  /* Subtle background texture */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232,93,59,0.10), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(201,169,97,0.07), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body.light::before {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232,93,59,0.06), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(201,169,97,0.04), transparent 60%);
+  }
+
+  .app { position: relative; z-index: 1; width: 100%; max-width: 600px; margin: 0 auto; padding: 0 22px 40px; min-height: 100vh; min-height: 100dvh; padding-top: max(env(safe-area-inset-top, 0px), 14px); }
+
+  /* Header */
+  .header {
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 14px 0 8px;
+  }
+  /* brand-mark removed */
+
+  .icon-btn {
+    width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s ease;
+  }
+  .icon-btn:hover { background: var(--surface-2); transform: translateY(-1px); }
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  /* Hero / title */
+  .hero { text-align: center; padding: 16px 4px 18px; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: calc(38px * var(--font-scale));
+    line-height: 1.05;
+    margin: 0 0 8px;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .hero .accent-rule {
+    display: inline-block; width: 56px; height: 2px;
+    background: var(--accent); margin: 6px auto 10px; border-radius: 2px;
+  }
+  .hero .disclaimer {
+    font-size: calc(13px * var(--font-scale));
+    color: var(--text-faint);
+    max-width: 360px; margin: 0 auto;
+    line-height: 1.4;
+  }
+  .hero .help-link {
+    display: inline-block; margin-top: 12px;
+    font-size: calc(14px * var(--font-scale));
+    color: var(--text-muted);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--text-faint);
+    cursor: pointer;
+  }
+  .hero .help-link:hover { color: var(--text); }
+  .how-to-app-link {
+    font-family: var(--sans);
+    font-size: calc(15px * var(--font-scale));
+    color: var(--text-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--text-faint);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .how-to-app-link:hover { color: var(--text); }
+
+  /* Section labels */
+  .section-label {
+    font-size: calc(13px * var(--font-scale));
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 22px 0 10px;
+  }
+
+  /* Pill row (session size) */
+  .pill-row { display: flex; gap: 12px; }
+  .pill {
+    flex: 1; padding: 16px 0;
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: calc(17px * var(--font-scale));
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .pill:hover { border-color: var(--accent); }
+  .pill.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(232,93,59,0.3);
+  }
+
+  /* Mode cards */
+  .mode-list { display: flex; flex-direction: column; gap: 10px; }
+  .mode-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 18px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-left: 4px solid transparent;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text);
+    text-align: left;
+    font-family: inherit;
+    width: 100%;
+  }
+  .mode-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
+  .mode-card[data-mode="random"] { border-left-color: var(--accent); }
+  .mode-card[data-mode="statement"] { border-left-color: var(--gold); }
+  .mode-card[data-mode="question"] { border-left-color: #8b9fd1; }
+  .mode-card[data-mode="category"] { border-left-color: #a08fc4; }
+
+  .mode-icon {
+    width: 46px; height: 46px; border-radius: 12px;
+    background: var(--surface-2);
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .mode-icon svg { width: 24px; height: 24px; color: var(--text); }
+  .mode-text { flex: 1; min-width: 0; }
+  .mode-title { font-weight: 600; font-size: calc(17px * var(--font-scale)); margin: 0 0 4px; }
+  .mode-sub { font-size: calc(14px * var(--font-scale)); color: var(--text-muted); }
+  .mode-arrow { color: var(--text-faint); flex-shrink: 0; }
+
+  /* Category list (collapsible) */
+  .category-list { display: none; flex-direction: column; gap: 6px; margin-top: 4px; padding-left: 6px; }
+  .category-list.open { display: flex; }
+  .category-btn {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text);
+    font-family: inherit;
+    font-size: calc(15.5px * var(--font-scale));
+    text-align: left;
+    transition: all 0.15s ease;
+  }
+  .category-btn:hover { border-color: var(--accent); }
+  .category-btn .count { color: var(--text-muted); font-size: calc(13.5px * var(--font-scale)); font-weight: 600; }
+
+  /* Action buttons */
+  .action-row { display: flex; flex-direction: column; gap: 10px; }
+  .action-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 18px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--surface-border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: inherit;
+    font-size: calc(16px * var(--font-scale));
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .action-btn:hover { background: var(--surface-2); }
+  .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .action-btn.primary { background: var(--accent); border-color: var(--accent); color: white; }
+  .action-btn.primary:hover { background: var(--accent-2); }
+  .action-btn .badge {
+    background: rgba(255,255,255,0.18);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: calc(11px * var(--font-scale));
+  }
+
+  /* ----- Session view — full-screen overlay ----- */
+  .session-view {
+    display: none;
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 600px;
+    flex-direction: column;
+    background: var(--bg);
+    z-index: 20; overflow: hidden;
+  }
+  .session-header { flex-shrink: 0; padding: max(env(safe-area-inset-top, 0px), 14px) 20px 0; }
+  .session-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 10px;
+  }
+  .progress-text { font-size: calc(13px * var(--font-scale)); color: var(--text-muted); letter-spacing: 0.5px; }
+  .progress-text strong { color: var(--text); }
+  .progress-bar { height: 3px; background: var(--surface); border-radius: 999px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); transition: width 0.3s ease; }
+  .session-card-area {
+    flex: 1; display: flex;
+    align-items: center; justify-content: center;
+    padding: 10px 18px 8px; min-height: 0;
+  }
+  .card-stack {
+    position: relative; perspective: 1200px;
+    /* Proper flashcard proportions — width fills phone, height capped */
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    max-height: min(calc(100vh - 220px), 680px);
+    user-select: none; -webkit-user-select: none;
+  }
+  .session-footer {
+    flex-shrink: 0; padding: 0 20px;
+    padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px);
+  }
+  .card {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: grab;
+    touch-action: pan-y;
+  }
+  .card.dragging { transition: none; cursor: grabbing; }
+  .card.flipped { transform: rotateY(180deg); }
+  .card.dragging.flipped, .card.flipped.dragging { transition: none; }
+
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: #FDFCFA;
+    color: #0F1E3D;
+    border-radius: 20px;
+    border: 1.5px solid #D8D0C4;
+    padding: 22px 22px 60px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.22);
+    overflow: hidden;
+  }
+  /* Top and bottom parchment rules */
+  .card-face::before {
+    content: ''; position: absolute;
+    left: 18px; right: 18px; top: 56px;
+    height: 0.5px; background: #E0D8CC;
+  }
+  .card-face::after {
+    content: ''; position: absolute;
+    left: 18px; right: 18px; bottom: 50px;
+    height: 0.5px; background: #E0D8CC;
+  }
+  .card-face.back { transform: rotateY(180deg); background: #F9F7F4; }
+  .card-face .category-tag {
+    font-size: calc(10.5px * var(--font-scale));
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .card-face .ref-tag {
+    font-size: calc(10.5px * var(--font-scale));
+    color: #B0A898;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  .card-face .card-body {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    overflow-y: auto; padding: 4px 2px;
+  }
+  /* Scale down back text for long definitions */
+  .card-face.back .card-body-text[data-len="med"] { font-size: calc(13px * var(--font-scale)); }
+  .card-face.back .card-body-text[data-len="long"] { font-size: calc(11px * var(--font-scale)); line-height: 1.45; }
+  .card-face.front .card-body-text {
+    font-family: var(--serif);
+    font-size: calc(34px * var(--font-scale));
+    font-weight: 700;
+    line-height: 1.2;
+    color: #0F1E3D;
+  }
+  /* Question type cards have smaller, sans front */
+  .card-face.front.is-question .card-body-text {
+    font-family: var(--sans);
+    font-size: calc(18px * var(--font-scale));
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .card-face.back .card-body-text {
+    font-family: var(--sans);
+    font-size: calc(15.5px * var(--font-scale));
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--cream-text);
+  }
+  /* Question type back is the short answer - make it bigger/serif */
+  .card-face.back.is-question .card-body-text {
+    font-family: var(--sans);
+    font-size: calc(32px * var(--font-scale));
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .card-face .tap-hint {
+    position: absolute; bottom: 18px; left: 0; right: 0;
+    text-align: center;
+    font-size: calc(10.5px * var(--font-scale));
+    color: #C8C0B4;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .card-face .top-corner {
+    position: absolute; top: 16px; right: 18px;
+    font-size: calc(11px * var(--font-scale));
+    color: #C8C0B4;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  /* Corner ornament dots */
+  .card-corners {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  }
+  .card-corners span {
+    position: absolute; width: 6px; height: 6px;
+    border-radius: 50%; border: 1px solid #D4C8BC;
+  }
+  .card-corners span:nth-child(1) { top: 13px; left: 13px; }
+  .card-corners span:nth-child(2) { top: 13px; right: 13px; }
+  .card-corners span:nth-child(3) { bottom: 13px; left: 13px; }
+  .card-corners span:nth-child(4) { bottom: 13px; right: 13px; }
+
+  /* Swipe overlay — moves with the card, shows border + label */
+  .swipe-overlay {
+    position: absolute; inset: 0;
+    border-radius: 20px;
+    border: 4px solid transparent;
+    pointer-events: none;
+    z-index: 8;
+    display: flex; align-items: center; justify-content: center;
+    transition: none;
+  }
+  .swipe-label {
+    font-family: var(--sans);
+    font-size: calc(42px * var(--font-scale));
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border-radius: 12px;
+    border: 5px solid currentColor;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Session actions */
+  .swipe-help { text-align: center; color: var(--text-muted); font-size: calc(15px * var(--font-scale)); margin-bottom: 8px; line-height: 1.5; }
+  .swipe-help .left-hint { color: var(--red-2); }
+  .swipe-help .right-hint { color: var(--green-2); }
+  .button-row { display: flex; gap: 10px; }
+  .button-row .nav-btn {
+    flex: 1;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: calc(14px * var(--font-scale));
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid var(--surface-border);
+  }
+  .nav-btn.prev {
+    background: var(--cream);
+    color: var(--cream-text);
+    border-color: var(--cream);
+  }
+  .nav-btn.prev:hover:not(:disabled) { background: white; }
+  .nav-btn.next {
+    background: var(--bg-2);
+    color: var(--text);
+    border-color: var(--bg-2);
+  }
+  body.light .nav-btn.next { background: #0F1E3D; color: white; border-color: #0F1E3D; }
+  .nav-btn.next:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
+  .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ----- Summary view ----- */
+  .summary-view { display: none; flex-direction: column; justify-content: center; min-height: 100vh; padding: 24px 0 48px; }
+  .summary-title {
+    font-family: var(--serif);
+    font-size: calc(32px * var(--font-scale));
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 6px;
+  }
+  .summary-message {
+    text-align: center; color: var(--text-muted);
+    margin-bottom: 22px;
+    font-size: calc(14px * var(--font-scale));
+  }
+  .stats-row { display: flex; gap: 10px; margin-bottom: 18px; }
+  .stat-card {
+    flex: 1; padding: 16px 12px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: calc(28px * var(--font-scale));
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-num.green { color: var(--green-2); }
+  .stat-num.red { color: var(--red); }
+  .stat-label {
+    font-size: calc(10.5px * var(--font-scale));
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .score-ring {
+    width: 130px; height: 130px;
+    margin: 0 auto 18px;
+    position: relative;
+  }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .track { fill: none; stroke: var(--surface-2); stroke-width: 10; }
+  .score-ring .fill { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
+  .score-ring-text {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: var(--serif);
+    font-weight: 600;
+  }
+  .score-ring-text .pct { font-size: calc(32px * var(--font-scale)); line-height: 1; }
+  .score-ring-text .pct-label { font-size: calc(11px * var(--font-scale)); color: var(--text-muted); margin-top: 2px; font-family: var(--sans); letter-spacing: 1px; text-transform: uppercase; }
+
+  .focus-section {
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .focus-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--surface-border);
+    font-size: calc(12px * var(--font-scale));
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .focus-list { padding: 6px 0; }
+  .focus-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 16px;
+    font-size: calc(14px * var(--font-scale));
+    color: var(--text);
+  }
+  .focus-item .count { color: var(--red); font-weight: 700; }
+  .empty-state {
+    padding: 20px 16px; text-align: center;
+    color: var(--text-muted);
+    font-size: calc(13px * var(--font-scale));
+  }
+
+  /* ----- Modal / Sheet ----- */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    animation: fade-in 0.2s ease;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--bg-2);
+    width: 100%; max-width: 540px;
+    border-radius: 24px 24px 0 0;
+    padding: 22px 22px 32px;
+    color: var(--text);
+    max-height: 90vh; overflow-y: auto;
+    animation: slide-up 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  body.light .modal { background: var(--surface); }
+  .modal-grabber {
+    width: 40px; height: 4px; background: var(--text-faint);
+    opacity: 0.4; border-radius: 999px;
+    margin: 0 auto 18px;
+  }
+  .modal h2 {
+    font-family: var(--serif);
+    font-size: calc(24px * var(--font-scale));
+    margin: 0 0 18px;
+    font-weight: 600;
+  }
+  .setting-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--surface-border);
+  }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { font-size: calc(14px * var(--font-scale)); font-weight: 500; }
+  .setting-sub { font-size: calc(12px * var(--font-scale)); color: var(--text-muted); margin-top: 2px; }
+  .toggle-group {
+    display: flex; background: var(--surface);
+    border-radius: 999px; padding: 3px;
+    border: 1px solid var(--surface-border);
+  }
+  .toggle-opt {
+    padding: 6px 14px; border-radius: 999px;
+    font-size: calc(12.5px * var(--font-scale));
+    font-weight: 600;
+    background: transparent;
+    border: 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-opt.active { background: var(--accent); color: white; }
+
+  /* Splash overlay */
+  .splash {
+    position: fixed; inset: 0;
+    background: rgba(10,22,40,0.94);
+    z-index: 200;
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 24px;
+    animation: fade-in 0.3s ease;
+  }
+  .splash.open { display: flex; }
+  body.light .splash { background: rgba(244,240,232,0.96); }
+  .splash-stack {
+    position: relative;
+    max-width: 420px;
+    width: 100%;
+  }
+  .splash-back-card {
+    position: absolute;
+    inset: 0;
+    background: var(--cream);
+    border-radius: 20px;
+    box-shadow: 0 15px 30px -10px rgba(0,0,0,0.45);
+    pointer-events: none;
+  }
+  .splash-back-card.bc-1 {
+    transform: rotate(-5deg) translate(-14px, 10px);
+    z-index: 1;
+    background: var(--cream-2);
+  }
+  .splash-back-card.bc-2 {
+    transform: rotate(3.5deg) translate(12px, -6px);
+    z-index: 2;
+    background: var(--cream);
+  }
+  /* Show a tiny "category tag" sliver on the cream cards to hint they are flashcards */
+  .splash-back-card::before {
+    content: "";
+    position: absolute;
+    top: 18px; left: 20px;
+    width: 60px; height: 8px;
+    background: var(--accent);
+    opacity: 0.25;
+    border-radius: 2px;
+  }
+  .splash-back-card.bc-1::after,
+  .splash-back-card.bc-2::after {
+    content: "";
+    position: absolute;
+    top: 36px; left: 20px;
+    width: 100px; height: 6px;
+    background: rgba(15,30,61,0.1);
+    border-radius: 2px;
+  }
+
+  .splash-card {
+    position: relative;
+    z-index: 3;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    width: 100%;
+    color: var(--text);
+    box-shadow:
+      0 25px 50px -12px rgba(0,0,0,0.6),
+      0 10px 20px -5px rgba(0,0,0,0.4);
+  }
+  .splash-card h2 {
+    font-family: var(--serif);
+    font-size: calc(28px * var(--font-scale));
+    margin: 0 0 6px;
+    text-align: center;
+    font-weight: 600;
+  }
+  .splash-card > p.lead {
+    text-align: center; color: var(--text-muted);
+    margin: 0 0 22px;
+    font-size: calc(13.5px * var(--font-scale));
+  }
+  .tutorial-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--surface-border);
+  }
+  .tutorial-row:first-of-type { border-top: 0; }
+  .tutorial-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; flex-shrink: 0;
+  }
+  .tutorial-icon.green { background: rgba(74,222,128,0.15); color: var(--green-2); border: 1px solid rgba(74,222,128,0.3); }
+  .tutorial-icon.red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .tutorial-icon.tap { background: rgba(201,169,97,0.15); color: var(--gold); border: 1px solid rgba(201,169,97,0.3); }
+  .tutorial-text-title { font-size: calc(14px * var(--font-scale)); font-weight: 600; margin-bottom: 2px; }
+  .tutorial-text-sub { font-size: calc(12.5px * var(--font-scale)); color: var(--text-muted); line-height: 1.4; }
+
+  .splash-cta {
+    margin-top: 22px;
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: 0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: calc(15px * var(--font-scale));
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .splash-cta:hover { background: var(--accent-2); }
+
+  /* Print PDF */
+  @page { size: A4 landscape; margin: 8mm; }
+  .print-root { display: none; }
+  body.printing { background: white !important; }
+  body.printing::before { display: none; }
+  body.printing .app { display: none; }
+  body.printing .print-root {
+    display: block;
+    position: relative;
+    z-index: 1000;
+    background: white;
+    color: #0F1E3D;
+    font-family: 'Manrope', sans-serif;
+  }
+  .print-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8mm;
+    width: 100%;
+    height: 196mm;
+    page-break-after: always;
+  }
+  /* Parchment-style B&W print cards */
+  .print-card {
+    border: 1.5px solid #000;
+    border-radius: 6pt;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+  }
+  /* Corner ornament dots */
+  .print-card::before, .print-card::after {
+    content: '';
+    position: absolute;
+    width: 5pt; height: 5pt;
+    border-radius: 50%;
+    border: 1pt solid #888;
+  }
+  .print-card::before { top: 4pt; left: 4pt; }
+  .print-card::after  { top: 4pt; right: 4pt; }
+  .print-card-side {
+    padding: 5mm 5mm 4mm;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .print-card-side.front { border-right: 1pt dashed #bbb; }
+  /* Top rule below category */
+  .print-card-side::after {
+    content: ''; display: block;
+    height: 0.5pt; background: #ccc;
+    margin: 2mm 0 3mm;
+  }
+  .print-card-meta {
+    display: flex; justify-content: space-between;
+    font-size: 6.5pt; color: #666;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .print-card-meta .num { font-weight: 700; color: #000; }
+  .print-card-body {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .print-card-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 13pt; font-weight: 700;
+    line-height: 1.2; color: #000;
+  }
+  .print-card-text.back { font-family: 'Manrope', sans-serif; font-size: 7.5pt; font-weight: 400; line-height: 1.45; color: #111; }
+  .print-card-text.question-front { font-family: 'Manrope', sans-serif; font-size: 8pt; font-weight: 500; line-height: 1.35; color: #000; }
+  .print-card-text.question-back { font-family: 'Playfair Display', Georgia, serif; font-size: 14pt; font-weight: 700; color: #000; }
+  .print-side-label {
+    position: absolute; bottom: 1mm; font-size: 5.5pt;
+    color: #aaa; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .print-side-label.front-label { left: 25%; transform: translateX(-50%); }
+  .print-side-label.back-label  { right: 25%; transform: translateX(50%); }
+
+  .print-cover {
+    page-break-after: always;
+    padding: 30mm 20mm;
+    text-align: center;
+  }
+  .print-cover h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36pt;
+    margin: 0 0 8mm;
+    color: #0F1E3D;
+  }
+  .print-cover .cover-rule { width: 60px; height: 2px; background: #E85D3B; margin: 0 auto 8mm; }
+  .print-cover p { color: #5a6a85; font-size: 11pt; line-height: 1.6; max-width: 140mm; margin: 0 auto 4mm; }
+  .print-cover .cover-note { font-size: 9pt; margin-top: 12mm; font-style: italic; }
+
+  /* Swipe demo cards in how-to */
+  .how-to-demo { display: flex; gap: 10px; margin-top: 12px; }
+  .demo-card {
+    flex: 1; border-radius: 10px; border: 2.5px solid;
+    overflow: hidden; font-family: var(--sans);
+    display: flex; flex-direction: column;
+  }
+  .demo-known { border-color: #22c55e; background: rgba(34,197,94,0.07); }
+  .demo-learning { border-color: #ef4444; background: rgba(239,68,68,0.07); }
+  .demo-card-inner {
+    flex: 1; padding: 12px 8px;
+    text-align: center;
+    font-family: var(--sans); font-size: calc(15px * var(--font-scale));
+    font-weight: 700; color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .demo-verdict {
+    padding: 6px 8px;
+    text-align: center;
+    font-size: calc(9px * var(--font-scale));
+    font-weight: 800; letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .demo-known .demo-verdict { color: #22c55e; background: rgba(34,197,94,0.1); }
+  .demo-learning .demo-verdict { color: #ef4444; background: rgba(239,68,68,0.1); }
+
+  /* How to use modal content */
+  .how-to-section { display: flex; flex-direction: column; gap: 0; }
+  .how-to-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 14px 0;
+    border-top: 1px solid var(--surface-border);
+  }
+  .how-to-item:first-child { border-top: none; }
+  .how-to-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: white;
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .how-to-title {
+    font-size: calc(14px * var(--font-scale));
+    font-weight: 600; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .how-to-body {
+    font-size: calc(13px * var(--font-scale));
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* Landscape orientation warning */
+  .landscape-warning {
+    display: none;
+    position: fixed; inset: 0; z-index: 300;
+    background: var(--bg);
+    flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 40px;
+    gap: 20px;
+  }
+  .landscape-warning svg { opacity: 0.5; }
+  .landscape-warning p { font-family: var(--sans); font-size: 18px; color: var(--text-muted); max-width: 280px; line-height: 1.5; }
+  @media (orientation: landscape) and (max-height: 500px) {
+    .landscape-warning { display: flex; }
+  }
+
+  /* Animations */
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  @keyframes card-fly-right { to { transform: translateX(150%) rotate(20deg); opacity: 0; } }
+  @keyframes card-fly-left { to { transform: translateX(-150%) rotate(-20deg); opacity: 0; } }
+  .card.fly-right { animation: card-fly-right 0.35s ease-out forwards; }
+  .card.fly-left { animation: card-fly-left 0.35s ease-out forwards; }
+
+  /* Responsive tweaks */
+  @media (min-width: 600px) {
+    .hero h1 { font-size: calc(52px * var(--font-scale)); }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ========== HOME VIEW ========== -->
+  <div id="home-view">
+    <div class="header">
+      <div></div>
+      <button class="icon-btn" id="settings-btn" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
+
+    <div class="hero">
+      <h1>FASEA Exam<br/>Flip Cards</h1>
+      <div class="accent-rule"></div>
+      <p class="disclaimer">
+        Not affiliated with ASIC, Treasury or any official examining body.
+      </p>
+      <a class="help-link" id="show-tutorial">How to use the cards</a>
+    </div>
+
+    <div class="section-label">Today's deck size</div>
+    <div class="pill-row" id="size-pills">
+      <button class="pill" data-size="10">10</button>
+      <button class="pill active" data-size="20">20</button>
+      <button class="pill" data-size="50">50</button>
+      <button class="pill" data-size="100">100</button>
+    </div>
+
+    <div class="section-label">Choose a deck</div>
+    <div class="mode-list">
+      <button class="mode-card" data-mode="random">
+        <div class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg></div>
+        <div class="mode-text">
+          <div class="mode-title">Random</div>
+          <div class="mode-sub">Mixed cards from across the bank</div>
+        </div>
+        <div class="mode-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+
+      <button class="mode-card" data-mode="statement">
+        <div class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M9 4v16"/></svg></div>
+        <div class="mode-text">
+          <div class="mode-title">Statement Cards</div>
+          <div class="mode-sub">Section / term → flip for the rule</div>
+        </div>
+        <div class="mode-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+
+      <button class="mode-card" data-mode="question">
+        <div class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="mode-text">
+          <div class="mode-title">Question Cards</div>
+          <div class="mode-sub">Question → flip for the answer</div>
+        </div>
+        <div class="mode-arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+
+      <button class="mode-card" data-mode="category" id="category-toggle">
+        <div class="mode-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <div class="mode-text">
+          <div class="mode-title">By Category</div>
+          <div class="mode-sub">Focus on one topic at a time</div>
+        </div>
+        <div class="mode-arrow" id="category-chevron"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </button>
+
+      <div class="category-list" id="category-list"></div>
+    </div>
+
+    <div class="section-label">Continue</div>
+    <div class="action-row">
+      <button class="action-btn" id="practice-incorrect-btn" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Practice Still-Learning
+        <span class="badge" id="learning-count">0</span>
+      </button>
+      <button class="action-btn" id="print-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print Cards (PDF)
+      </button>
+    </div>
+
+    <!-- How to use APP link -->
+    <div style="text-align: center; padding: 28px 0 8px;">
+      <a class="how-to-app-link" id="show-how-to-app">How to use APP</a>
+    </div>
+  </div>
+
+  <!-- ========== SESSION VIEW ========== -->
+  <div class="session-view" id="session-view">
+
+    <div class="session-header">
+      <div class="session-top">
+        <button class="icon-btn" id="end-session-btn" aria-label="End session">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="progress-text">Card <strong id="prog-current">1</strong> of <strong id="prog-total">20</strong></div>
+        <div style="width:38px"></div>
+      </div>
+      <div class="progress-bar"><div class="progress-bar-fill" id="progress-fill" style="width:5%"></div></div>
+    </div>
+
+    <div class="session-card-area">
+      <div class="card-stack" id="card-stack">
+        <!-- card injected here -->
+      </div>
+    </div>
+
+    <div class="session-footer">
+      <div class="swipe-help">
+        <span class="left-hint">← Still learning</span> &nbsp;·&nbsp; Tap to flip &nbsp;·&nbsp; <span class="right-hint">Known →</span>
+      </div>
+      <div class="button-row">
+        <button class="nav-btn prev" id="btn-prev">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Previous
+        </button>
+        <button class="nav-btn next" id="btn-next">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== SUMMARY VIEW ========== -->
+  <div class="summary-view" id="summary-view">
+    <div class="session-top">
+      <button class="icon-btn" id="summary-home-btn" aria-label="Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="progress-text">Session complete</div>
+      <div style="width:38px"></div>
+    </div>
+
+    <h2 class="summary-title" id="summary-title">Nice work</h2>
+    <p class="summary-message" id="summary-message">Keep going.</p>
+
+    <div class="score-ring">
+      <svg width="130" height="130" viewBox="0 0 130 130">
+        <circle class="track" cx="65" cy="65" r="56"></circle>
+        <circle class="fill" id="score-fill" cx="65" cy="65" r="56" stroke="#22c55e" stroke-dasharray="351.86" stroke-dashoffset="351.86"></circle>
+      </svg>
+      <div class="score-ring-text">
+        <div class="pct" id="score-pct">0%</div>
+        <div class="pct-label">Known</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num green" id="stat-known">0</div><div class="stat-label">Known</div></div>
+      <div class="stat-card"><div class="stat-num red" id="stat-learning">0</div><div class="stat-label">Learning</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-time">0:00</div><div class="stat-label">Time</div></div>
+    </div>
+
+    <div class="focus-section">
+      <div class="focus-header">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Focus on these topics
+      </div>
+      <div class="focus-list" id="focus-list">
+        <div class="empty-state">All clear — no incorrect answers this session.</div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn primary" id="practice-incorrect-summary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        Practice still-learning
+      </button>
+      <button class="action-btn" id="summary-home-btn2">Back to home</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== SETTINGS MODAL ========== -->
+<div class="modal-backdrop" id="settings-modal">
+  <div class="modal">
+    <div class="modal-grabber"></div>
+    <h2>Settings</h2>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Theme</div>
+        <div class="setting-sub">Light or dark mode</div>
+      </div>
+      <div class="toggle-group" id="theme-toggle">
+        <button class="toggle-opt" data-theme="dark">Dark</button>
+        <button class="toggle-opt" data-theme="light">Light</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Text size</div>
+        <div class="setting-sub">Bigger text for longer reading</div>
+      </div>
+      <div class="toggle-group" id="size-toggle">
+        <button class="toggle-opt" data-size="normal">Normal</button>
+        <button class="toggle-opt" data-size="large">Large</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Mark all cards as unseen</div>
+        <div class="setting-sub">Clear all known / still-learning marks and start fresh</div>
+      </div>
+      <button class="action-btn" id="reset-progress-btn" style="padding: 8px 14px; font-size: 12px;">Reset</button>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Replay tutorial</div>
+        <div class="setting-sub">Show the swipe guide again</div>
+      </div>
+      <button class="action-btn" id="replay-tutorial-btn" style="padding: 8px 14px; font-size: 12px;">Replay</button>
+    </div>
+
+    <div class="setting-row">
+      <div>
+        <div class="setting-label">Version</div>
+        <div class="setting-sub" id="version-string">1.0.0</div>
+      </div>
+    </div>
+
+    <button class="action-btn primary" id="settings-close-btn" style="margin-top: 18px; width: 100%;">Done</button>
+  </div>
+</div>
+
+<!-- ========== SPLASH / TUTORIAL ========== -->
+<div class="splash" id="splash">
+  <div class="splash-stack">
+    <div class="splash-back-card bc-1"></div>
+    <div class="splash-back-card bc-2"></div>
+    <div class="splash-card">
+      <h2>How it works</h2>
+    <p class="lead">Three ways to interact with each card.</p>
+
+    <div class="tutorial-row">
+      <div class="tutorial-icon tap">↻</div>
+      <div>
+        <div class="tutorial-text-title">Tap to flip</div>
+        <div class="tutorial-text-sub">See the answer or definition on the back.</div>
+      </div>
+    </div>
+
+    <div class="tutorial-row">
+      <div class="tutorial-icon green">→</div>
+      <div>
+        <div class="tutorial-text-title">Swipe right = Known</div>
+        <div class="tutorial-text-sub">Card moves on. You won't see it in still-learning.</div>
+      </div>
+    </div>
+
+    <div class="tutorial-row">
+      <div class="tutorial-icon red">←</div>
+      <div>
+        <div class="tutorial-text-title">Swipe left = Still learning</div>
+        <div class="tutorial-text-sub">Card comes back to the end of the deck and is saved for review later.</div>
+      </div>
+    </div>
+
+    <button class="splash-cta" id="splash-cta">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== HOW TO USE APP MODAL ========== -->
+<div class="modal-backdrop" id="how-to-app-modal">
+  <div class="modal">
+    <div class="modal-grabber"></div>
+    <h2>How to use</h2>
+
+    <div class="how-to-section">
+      <div class="how-to-item">
+        <div class="how-to-num">1</div>
+        <div>
+          <div class="how-to-title">Choose your deck size</div>
+          <div class="how-to-body">Pick 10, 20, 50 or 100 cards at the top of the home screen. Start with 20 for a focused study sprint, or go to 100 for a full mock session.</div>
+        </div>
+      </div>
+      <div class="how-to-item">
+        <div class="how-to-num">2</div>
+        <div>
+          <div class="how-to-title">Pick a mode</div>
+          <div class="how-to-body"><strong>Random</strong> — draws from all 100 cards across every topic.<br><strong>Statement cards</strong> — section number on the front, rule on the back. Tests recall of what each section does.<br><strong>Question cards</strong> — asks which section covers a topic. Tests recall in reverse.<br><strong>By Category</strong> — drill one topic at a time (APPs, FASEA Standards, Licensing, etc).</div>
+        </div>
+      </div>
+      <div class="how-to-item">
+        <div class="how-to-num">3</div>
+        <div>
+          <div class="how-to-title">Work through the cards</div>
+          <div class="how-to-body">Tap to flip. Drag the card left or right to mark it.</div>
+          <div class="how-to-demo">
+            <div class="demo-card demo-known">
+              <div class="demo-card-inner">s961B</div>
+              <div class="demo-verdict">KNOWN →</div>
+            </div>
+            <div class="demo-card demo-learning">
+              <div class="demo-card-inner">APP 3</div>
+              <div class="demo-verdict">← LEARNING</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="how-to-item">
+        <div class="how-to-num">4</div>
+        <div>
+          <div class="how-to-title">Use Previous &amp; Next to navigate</div>
+          <div class="how-to-body">The Previous and Next buttons let you move through cards without committing a Known or Learning verdict — useful for a first pass to familiarise yourself with the content.</div>
+        </div>
+      </div>
+      <div class="how-to-item">
+        <div class="how-to-num">5</div>
+        <div>
+          <div class="how-to-title">Review your session summary</div>
+          <div class="how-to-body">At the end of each session you'll see your score, a breakdown of which topics need work, and a shortcut to immediately drill your weak areas.</div>
+        </div>
+      </div>
+      <div class="how-to-item">
+        <div class="how-to-num">6</div>
+        <div>
+          <div class="how-to-title">Practice Still-Learning</div>
+          <div class="how-to-body">Cards you swiped left are saved across sessions. Use the Practice Still-Learning button on the home screen to run a focused deck of only the cards you haven't mastered yet.</div>
+        </div>
+      </div>
+      <div class="how-to-item">
+        <div class="how-to-num">7</div>
+        <div>
+          <div class="how-to-title">Print physical cards</div>
+          <div class="how-to-body">Hit Print Cards (PDF) to open a print-ready layout — 4 cards per A4 page, front and back side by side, with cut lines. Save as PDF from your browser's print dialog.</div>
+        </div>
+      </div>
+      <div class="how-to-item">
+        <div class="how-to-num">8</div>
+        <div>
+          <div class="how-to-title">Start fresh — mark all cards as unseen</div>
+          <div class="how-to-body">In Settings (⚙ top right), tap <strong>Mark all cards as unseen</strong> to clear all Known and Still-Learning marks and reset to a clean slate.</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="action-btn primary" id="how-to-app-close" style="margin-top: 20px; width: 100%;">Got it</button>
+  </div>
+</div>
+
+<!-- ========== LANDSCAPE WARNING ========== -->
+<div class="landscape-warning">
+  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    <rect x="2" y="5" width="14" height="20" rx="2"/>
+    <polyline points="22 9 22 15"/>
+    <path d="M18 9l4 3-4 3"/>
+  </svg>
+  <p>Please rotate your device to portrait mode to use FASEA Exam Flip Cards.</p>
+</div>
+
+<!-- ========== PRINT ROOT ========== -->
+<div class="print-root" id="print-root"></div>
+
+<script>
+// ==================== DATA ====================
+const CARDS = [{"id": 1, "category": "Best Interests Duty", "type": "statement", "front": "s961B", "back": "Best interests duty — adviser must act in the best interests of the client when giving personal advice. Safe harbour = 7 steps in s961B(2).", "ref": "Corps Act"}, {"id": 2, "category": "Best Interests Duty", "type": "statement", "front": "s961G", "back": "Appropriate advice obligation — advice must be appropriate to the client given the subject matter and inquiries made.", "ref": "Corps Act"}, {"id": 3, "category": "Best Interests Duty", "type": "statement", "front": "s961H", "back": "Warn client if advice is based on incomplete or inaccurate information — warning that advice may not be appropriate.", "ref": "Corps Act"}, {"id": 4, "category": "Best Interests Duty", "type": "statement", "front": "s961J", "back": "Priority rule — client's interests must be prioritised over interests of adviser, licensee, employer, or associates.", "ref": "Corps Act"}, {"id": 5, "category": "Safe Harbour Steps", "type": "statement", "front": "Safe Harbour Step 1", "back": "Identify the subject matter of the advice sought by the client (express and implied).", "ref": "s961B(2)(a)"}, {"id": 6, "category": "Safe Harbour Steps", "type": "statement", "front": "Safe Harbour Step 2", "back": "Identify the client's objectives, financial situation and needs (relevant circumstances).", "ref": "s961B(2)(b)(i)"}, {"id": 7, "category": "Safe Harbour Steps", "type": "statement", "front": "Safe Harbour Step 3", "back": "Make reasonable inquiries to obtain complete and accurate information.", "ref": "s961B(2)(c)"}, {"id": 8, "category": "Safe Harbour Steps", "type": "statement", "front": "Safe Harbour Step 4", "back": "Assess whether you have the expertise required — if not, decline to give the advice.", "ref": "s961B(2)(d)"}, {"id": 9, "category": "Safe Harbour Steps", "type": "statement", "front": "Safe Harbour Step 5", "back": "If recommending a product, conduct a reasonable investigation into products that might achieve the client's objectives.", "ref": "s961B(2)(e)"}, {"id": 10, "category": "Safe Harbour Steps", "type": "statement", "front": "Safe Harbour Step 6", "back": "Base all judgments on the client's relevant circumstances.", "ref": "s961B(2)(f)"}, {"id": 11, "category": "Safe Harbour Steps", "type": "statement", "front": "Safe Harbour Step 7", "back": "Take any other step that would reasonably be regarded as in the best interests of the client.", "ref": "s961B(2)(g)"}, {"id": 12, "category": "Conflicted Remuneration", "type": "statement", "front": "s963A", "back": "Definition — any benefit (monetary or non-monetary) given to an AFSL holder or representative that could reasonably influence financial product advice or product choice.", "ref": "Corps Act"}, {"id": 13, "category": "Conflicted Remuneration", "type": "statement", "front": "s963B", "back": "Ban on accepting conflicted remuneration — AFSL holders and representatives must not accept it.", "ref": "Corps Act"}, {"id": 14, "category": "Conflicted Remuneration", "type": "statement", "front": "s963E", "back": "Ban on giving conflicted remuneration — product issuers and sellers must not give it.", "ref": "Corps Act"}, {"id": 15, "category": "Conflicted Remuneration", "type": "statement", "front": "s963L", "back": "Volume-based shelf space fees banned — platform operators cannot accept payments from fund managers based on volume of business.", "ref": "Corps Act"}, {"id": 16, "category": "Conflicted Remuneration", "type": "statement", "front": "Conflicted Remuneration (general)", "back": "Any benefit that could reasonably influence advice or product choice. Includes commissions and volume bonuses. Excludes general insurance commissions and execution-only services.", "ref": "FOFA"}, {"id": 17, "category": "Conflict Examples", "type": "statement", "front": "Soft Dollar Benefits", "back": "Non-monetary benefits (training, conferences, gifts) over $300 that could influence advice = conflicted remuneration. Under $300, infrequent and educational = allowed.", "ref": "Reg 7.7A.15"}, {"id": 18, "category": "Conflict Examples", "type": "statement", "front": "Volume-Based Benefits", "back": "Payments based on total volume or value of business placed with a product provider = conflicted remuneration (banned).", "ref": "s963L"}, {"id": 19, "category": "Conflict Examples", "type": "statement", "front": "Shelf Space Fees", "back": "Payments from a product issuer to a platform operator for inclusion on the APL. If volume-based, banned under s963L.", "ref": "s963L"}, {"id": 20, "category": "Conflict Examples", "type": "statement", "front": "Asset-Based Fees", "back": "Fees calculated as a % of client's assets — permitted on non-borrowed amounts with proper disclosure. Banned on geared/borrowed amounts.", "ref": "s964D"}, {"id": 21, "category": "Conflict Examples", "type": "statement", "front": "Insurance Commissions", "back": "Life risk insurance commissions allowed under LIF caps: max 60% upfront / 20% ongoing (from 2018). General insurance commissions exempt from FOFA conflicted remuneration ban.", "ref": "LIF"}, {"id": 22, "category": "Fee Disclosure & Opt-In", "type": "statement", "front": "s962G", "back": "Fee Disclosure Statement (FDS) — must be given annually to ongoing fee arrangement clients. Discloses fees paid and services received in past 12 months, plus fees and services for next 12 months.", "ref": "Corps Act"}, {"id": 23, "category": "Fee Disclosure & Opt-In", "type": "statement", "front": "s962K", "back": "Opt-in renewal — client must renew ongoing fee arrangement annually. Without consent, the arrangement terminates after 30 days.", "ref": "Corps Act"}, {"id": 24, "category": "Fee Disclosure & Opt-In", "type": "statement", "front": "FDS content requirements", "back": "(1) Fees paid last 12 months. (2) Services entitled to receive. (3) Services actually received. (4) Services entitled to receive next 12 months. (5) Estimated fees next 12 months.", "ref": "s962H"}, {"id": 25, "category": "Licensing", "type": "statement", "front": "s911A", "back": "Must hold an AFSL to carry on a financial services business in Australia (unless exempt). Breach is a criminal offence.", "ref": "Corps Act"}, {"id": 26, "category": "Licensing", "type": "statement", "front": "s912A", "back": "General obligations of AFSL holder — efficient/honest/fair conduct, manage conflicts, compliance arrangements, adequate resources, training, dispute resolution, compensation arrangements.", "ref": "Corps Act"}, {"id": 27, "category": "Licensing", "type": "statement", "front": "s912B", "back": "Compensation arrangements — retail clients must have access to compensation (typically PI insurance) for losses caused by licensee breach.", "ref": "Corps Act"}, {"id": 28, "category": "Disclosure Documents", "type": "statement", "front": "s941A", "back": "Obligation to give a Financial Services Guide (FSG) when providing a financial service to a retail client.", "ref": "Corps Act"}, {"id": 29, "category": "Disclosure Documents", "type": "statement", "front": "s941B", "back": "FSG obligation extends to an authorised representative providing the service (not just the licensee).", "ref": "Corps Act"}, {"id": 30, "category": "Disclosure Documents", "type": "statement", "front": "s946A", "back": "Obligation to give a Statement of Advice (SOA) when providing personal advice to a retail client.", "ref": "Corps Act"}, {"id": 31, "category": "Disclosure Documents", "type": "statement", "front": "s946B", "back": "SOA exceptions — small investment SOA exemption ($15,000), further market-related advice, time-critical situations (ROA may apply instead).", "ref": "Corps Act"}, {"id": 32, "category": "Disclosure Documents", "type": "statement", "front": "s947B", "back": "SOA content (licensee) — must include the advice, basis for advice, info about providing entity, remuneration, associations/relationships, warnings if based on incomplete info.", "ref": "Corps Act"}, {"id": 33, "category": "Disclosure Documents", "type": "statement", "front": "s947C", "back": "SOA content (authorised representative) — same as s947B plus information about the AR and the licensee.", "ref": "Corps Act"}, {"id": 34, "category": "Disclosure Documents", "type": "statement", "front": "s949A", "back": "Record of Advice (ROA) — simpler document where SOA not required (e.g. further advice with no material change in client circumstances).", "ref": "Corps Act"}, {"id": 35, "category": "Document Timing", "type": "statement", "front": "FSG — timing", "back": "Must be given 'as soon as practicable' after it becomes apparent service will be provided, and BEFORE the service is provided. Can be given at the same time as advice in time-critical situations.", "ref": "s941D"}, {"id": 36, "category": "Document Timing", "type": "statement", "front": "PDS — timing", "back": "Must be given before or at the time of issue or sale of the product to a retail client. Generally before any recommendation.", "ref": "s1012B"}, {"id": 37, "category": "Document Timing", "type": "statement", "front": "SOA — timing", "back": "Must be given at the time advice is given, or as soon as practicable after. Must be given before any further service relating to that advice.", "ref": "s946C"}, {"id": 38, "category": "Document Timing", "type": "statement", "front": "ROA — validity & retention", "back": "Used where no material change in client's circumstances since last SOA, or further advice on same matters. Must be retained for 7 years and provided on request within 28 days.", "ref": "Reg 7.7.10AE"}, {"id": 39, "category": "Document Timing", "type": "statement", "front": "FDS — timing", "back": "Must be given annually to ongoing fee arrangement clients within 60 days of the 'disclosure day' (anniversary of the arrangement).", "ref": "s962G"}, {"id": 40, "category": "AML/CTF", "type": "statement", "front": "AML/CTF Act s41", "back": "Suspicious Matter Reports (SMRs) — must report to AUSTRAC if you form a suspicion. Timing: 3 business days (24 hours if terrorism financing related). No threshold amount.", "ref": "AML/CTF Act"}, {"id": 41, "category": "AML/CTF", "type": "statement", "front": "AML/CTF Act s43", "back": "Threshold Transaction Reports (TTRs) — cash (physical currency) transactions of A$10,000 or more (or foreign equivalent). Report to AUSTRAC within 10 business days.", "ref": "AML/CTF Act"}, {"id": 42, "category": "AML/CTF", "type": "statement", "front": "SMR threshold & triggers", "back": "No monetary threshold. Triggered by suspicion that customer or transaction relates to tax evasion, proceeds of crime, terrorism financing, identity fraud, or AML offence.", "ref": "s41"}, {"id": 43, "category": "AML/CTF", "type": "statement", "front": "TTR threshold & timing", "back": "A$10,000 or more in physical currency (cash). Reported via AUSTRAC Online within 10 business days of the transaction.", "ref": "s43"}, {"id": 44, "category": "APP Privacy Principles", "type": "statement", "front": "APP 1", "back": "Open and transparent management of personal information — must have a clear privacy policy that is freely available.", "ref": "Privacy Act"}, {"id": 45, "category": "APP Privacy Principles", "type": "statement", "front": "APP 2", "back": "Anonymity and pseudonymity — individuals must have the option to deal anonymously, unless impracticable or required by law.", "ref": "Privacy Act"}, {"id": 46, "category": "APP Privacy Principles", "type": "statement", "front": "APP 3", "back": "Collection of solicited personal information — only collect info reasonably necessary for your functions. Sensitive info needs consent.", "ref": "Privacy Act"}, {"id": 47, "category": "APP Privacy Principles", "type": "statement", "front": "APP 4", "back": "Dealing with unsolicited personal information — if you couldn't have collected it under APP 3, destroy or de-identify.", "ref": "Privacy Act"}, {"id": 48, "category": "APP Privacy Principles", "type": "statement", "front": "APP 5", "back": "Notification of collection — notify the individual at or before collection of identity, purpose, consequences of non-collection, and disclosure recipients.", "ref": "Privacy Act"}, {"id": 49, "category": "APP Privacy Principles", "type": "statement", "front": "APP 6", "back": "Use or disclosure — only use/disclose for the primary purpose unless an exception applies (consent, related secondary purpose, law enforcement, etc.).", "ref": "Privacy Act"}, {"id": 50, "category": "APP Privacy Principles", "type": "statement", "front": "APP 7", "back": "Direct marketing — generally prohibited unless conditions met (opt-out provided, source disclosed).", "ref": "Privacy Act"}, {"id": 51, "category": "APP Privacy Principles", "type": "statement", "front": "APP 8", "back": "Cross-border disclosure — must take reasonable steps to ensure the overseas recipient complies with the APPs.", "ref": "Privacy Act"}, {"id": 52, "category": "APP Privacy Principles", "type": "statement", "front": "APP 9", "back": "Adoption, use or disclosure of government-related identifiers — generally prohibited (e.g. don't use TFN as a customer ID).", "ref": "Privacy Act"}, {"id": 53, "category": "APP Privacy Principles", "type": "statement", "front": "APP 10", "back": "Quality of personal information — must take reasonable steps to ensure info is accurate, complete and up-to-date.", "ref": "Privacy Act"}, {"id": 54, "category": "APP Privacy Principles", "type": "statement", "front": "APP 11", "back": "Security of personal information — protect from misuse, interference, loss, unauthorised access. Destroy/de-identify when no longer needed.", "ref": "Privacy Act"}, {"id": 55, "category": "APP Privacy Principles", "type": "statement", "front": "APP 12", "back": "Access to personal information — individual has a right to access their information on request.", "ref": "Privacy Act"}, {"id": 56, "category": "APP Privacy Principles", "type": "statement", "front": "APP 13", "back": "Correction of personal information — must correct info on request if inaccurate, out of date, incomplete, irrelevant or misleading.", "ref": "Privacy Act"}, {"id": 57, "category": "FASEA Standards", "type": "statement", "front": "Standard 1", "back": "Act in accordance with applicable laws (including the intent of those laws) and do not try to avoid or circumvent them.", "ref": "Code of Ethics"}, {"id": 58, "category": "FASEA Standards", "type": "statement", "front": "Standard 2", "back": "Act with integrity and in the best interests of each of your clients.", "ref": "Code of Ethics"}, {"id": 59, "category": "FASEA Standards", "type": "statement", "front": "Standard 3", "back": "Must not advise, refer or act where you have a conflict of interest or duty.", "ref": "Code of Ethics"}, {"id": 60, "category": "FASEA Standards", "type": "statement", "front": "Standard 4", "back": "Only act for a client with their free, prior and informed consent — extends to scope, fees and all services.", "ref": "Code of Ethics"}, {"id": 61, "category": "FASEA Standards", "type": "statement", "front": "Standard 5", "back": "All advice and products must be in the client's best interests and appropriate to their circumstances. Client must understand the advice, benefits, costs and risks.", "ref": "Code of Ethics"}, {"id": 62, "category": "FASEA Standards", "type": "statement", "front": "Standard 6", "back": "Take into account the broad effects of acting on the client's advice, including the likely circumstances of the client.", "ref": "Code of Ethics"}, {"id": 63, "category": "FASEA Standards", "type": "statement", "front": "Standard 7", "back": "Client must consent to all fees and benefits. Fees must be fair and reasonable and represent value for money.", "ref": "Code of Ethics"}, {"id": 64, "category": "FASEA Standards", "type": "statement", "front": "Standard 8", "back": "Keep complete and accurate records of advice and services provided.", "ref": "Code of Ethics"}, {"id": 65, "category": "FASEA Standards", "type": "statement", "front": "Standard 9", "back": "All advice and products offered must be offered in good faith, with competence, and not mislead or deceive.", "ref": "Code of Ethics"}, {"id": 66, "category": "FASEA Standards", "type": "statement", "front": "Standard 10", "back": "Develop, maintain and apply a high level of relevant knowledge and skills (CPD).", "ref": "Code of Ethics"}, {"id": 67, "category": "FASEA Standards", "type": "statement", "front": "Standard 11", "back": "Cooperate with ASIC, AFCA, and any monitoring or enforcement body in good faith.", "ref": "Code of Ethics"}, {"id": 68, "category": "FASEA Standards", "type": "statement", "front": "Standard 12", "back": "Individually and with peers, uphold and promote the ethical standards of the profession and hold each other accountable.", "ref": "Code of Ethics"}, {"id": 69, "category": "FASEA Values", "type": "statement", "front": "Value: Trustworthy", "back": "Act to demonstrate, realise and promote the value of trustworthiness — act with integrity to inspire confidence.", "ref": "Code of Ethics"}, {"id": 70, "category": "FASEA Values", "type": "statement", "front": "Value: Competent", "back": "Have the necessary knowledge, skills and experience to provide the service — maintain through CPD.", "ref": "Code of Ethics"}, {"id": 71, "category": "FASEA Values", "type": "statement", "front": "Value: Honest", "back": "Be truthful in all dealings — do not mislead or deceive.", "ref": "Code of Ethics"}, {"id": 72, "category": "FASEA Values", "type": "statement", "front": "Value: Fair", "back": "Provide services in a way that is fair to all clients and stakeholders — balance competing interests properly.", "ref": "Code of Ethics"}, {"id": 73, "category": "FASEA Values", "type": "statement", "front": "Value: Diligent", "back": "Perform services and duties carefully, efficiently and to the best of one's ability.", "ref": "Code of Ethics"}, {"id": 74, "category": "Who Can Advise", "type": "statement", "front": "Car insurance — licence required?", "back": "General insurance product — requires AFSL with general insurance authorisation. Note: general insurance is exempt from many FOFA requirements (conflicted remuneration ban does not apply to GI commissions).", "ref": "Corps Act Ch 7"}, {"id": 75, "category": "Who Can Advise", "type": "statement", "front": "Car loans — licence required?", "back": "Credit product, not a financial product under the Corporations Act. Requires an Australian Credit Licence (ACL) under the NCCP Act — NOT an AFSL.", "ref": "NCCP Act"}, {"id": 76, "category": "Who Can Advise", "type": "statement", "front": "Stockbroking — licence required?", "back": "Requires AFSL with authorisations to deal in securities. If providing personal advice, requires advice authorisations plus a qualified person (FASEA-compliant adviser) on the Financial Advisers Register.", "ref": "Corps Act Ch 7"}, {"id": 77, "category": "Who Can Advise", "type": "statement", "front": "Home loans — licence required?", "back": "Credit product under the NCCP Act. Requires an Australian Credit Licence (ACL) or to be a credit representative. Mortgage brokers also subject to Best Interests Duty under NCCP s158LA (separate from Corps Act BID).", "ref": "NCCP Act"}, {"id": 78, "category": "DDO / TMD", "type": "statement", "front": "DDO — purpose", "back": "Design and Distribution Obligations (Pt 7.8A Corps Act). Issuers must design products with target market in mind; distributors must take reasonable steps to ensure products reach the target market. Effective Oct 2021.", "ref": "Pt 7.8A"}, {"id": 79, "category": "DDO / TMD", "type": "statement", "front": "TMD — Target Market Determination", "back": "Document issued by the product issuer describing: class of consumers the product is appropriate for, distribution conditions, review triggers and review dates.", "ref": "s994B"}, {"id": 80, "category": "DDO / TMD", "type": "statement", "front": "TMD — review/trigger events", "back": "Significant dealings outside the target market, material change to the product, complaints exceeding threshold, regulatory action, or scheduled review date reached.", "ref": "s994C"}, {"id": 81, "category": "Question Cards", "type": "question", "front": "Which section of the Corporations Act creates the best interests duty?", "back": "s961B", "ref": "Best Interests Duty"}, {"id": 82, "category": "Question Cards", "type": "question", "front": "Which section covers the priority rule (client interests first)?", "back": "s961J", "ref": "Best Interests Duty"}, {"id": 83, "category": "Question Cards", "type": "question", "front": "Which section requires appropriate advice?", "back": "s961G", "ref": "Best Interests Duty"}, {"id": 84, "category": "Question Cards", "type": "question", "front": "Which section requires a warning where advice is based on incomplete information?", "back": "s961H", "ref": "Best Interests Duty"}, {"id": 85, "category": "Question Cards", "type": "question", "front": "Which section requires holding an AFSL?", "back": "s911A", "ref": "Licensing"}, {"id": 86, "category": "Question Cards", "type": "question", "front": "Which section sets out the general obligations of an AFSL holder?", "back": "s912A", "ref": "Licensing"}, {"id": 87, "category": "Question Cards", "type": "question", "front": "Which section covers compensation arrangements for retail clients?", "back": "s912B", "ref": "Licensing"}, {"id": 88, "category": "Question Cards", "type": "question", "front": "Which section creates the obligation to give an FSG?", "back": "s941A", "ref": "Disclosure"}, {"id": 89, "category": "Question Cards", "type": "question", "front": "Which section creates the obligation to give an SOA?", "back": "s946A", "ref": "Disclosure"}, {"id": 90, "category": "Question Cards", "type": "question", "front": "Which section covers the Record of Advice (ROA)?", "back": "s949A", "ref": "Disclosure"}, {"id": 91, "category": "Question Cards", "type": "question", "front": "Which section defines conflicted remuneration?", "back": "s963A", "ref": "Conflicted Remuneration"}, {"id": 92, "category": "Question Cards", "type": "question", "front": "Which section bans accepting conflicted remuneration?", "back": "s963B", "ref": "Conflicted Remuneration"}, {"id": 93, "category": "Question Cards", "type": "question", "front": "Which section bans volume-based shelf space fees?", "back": "s963L", "ref": "Conflicted Remuneration"}, {"id": 94, "category": "Question Cards", "type": "question", "front": "Which section covers Fee Disclosure Statements?", "back": "s962G", "ref": "Fee Disclosure"}, {"id": 95, "category": "Question Cards", "type": "question", "front": "Which section covers opt-in renewal?", "back": "s962K", "ref": "Fee Disclosure"}, {"id": 96, "category": "Question Cards", "type": "question", "front": "Which AML/CTF Act section covers suspicious matter reports?", "back": "s41", "ref": "AML/CTF"}, {"id": 97, "category": "Question Cards", "type": "question", "front": "Which AML/CTF Act section covers threshold transaction reports?", "back": "s43", "ref": "AML/CTF"}, {"id": 98, "category": "Question Cards", "type": "question", "front": "What is the threshold amount for a TTR?", "back": "A$10,000 (cash / physical currency transactions)", "ref": "AML/CTF"}, {"id": 99, "category": "Question Cards", "type": "question", "front": "How many APP Privacy Principles are there?", "back": "13", "ref": "Privacy"}, {"id": 100, "category": "Question Cards", "type": "question", "front": "How many FASEA Standards are there?", "back": "12", "ref": "Code of Ethics"}];
+const CATEGORIES = ["Best Interests Duty", "Safe Harbour Steps", "Conflicted Remuneration", "Conflict Examples", "Fee Disclosure & Opt-In", "Licensing", "Disclosure Documents", "Document Timing", "AML/CTF", "APP Privacy Principles", "FASEA Standards", "FASEA Values", "Who Can Advise", "DDO / TMD", "Question Cards"];
+const VERSION = "1.0.0";
+
+// ==================== STATE ====================
+const LS = {
+  known: 'fasea_known_v1',
+  learning: 'fasea_learning_v1',
+  splash: 'fasea_splash_seen_v1',
+  theme: 'fasea_theme_v1',
+  textsize: 'fasea_textsize_v1',
+  sessionSize: 'fasea_session_size_v1',
+};
+
+const state = {
+  view: 'home',                // 'home' | 'session' | 'summary'
+  sessionSize: parseInt(localStorage.getItem(LS.sessionSize) || '20', 10),
+  selectedMode: null,          // 'random' | 'statement' | 'question' | category-name
+  deck: [],                    // active card list
+  index: 0,
+  sessionResults: { known: [], learning: [] },
+  sessionStart: null,
+  knownAll: new Set(JSON.parse(localStorage.getItem(LS.known) || '[]')),
+  learningAll: new Set(JSON.parse(localStorage.getItem(LS.learning) || '[]')),
+  isFlipped: false,
+  drag: { active: false, startX: 0, dx: 0 },
+};
+
+function saveProgress() {
+  localStorage.setItem(LS.known, JSON.stringify([...state.knownAll]));
+  localStorage.setItem(LS.learning, JSON.stringify([...state.learningAll]));
+}
+
+// ==================== UTIL ====================
+function $(sel) { return document.querySelector(sel); }
+function $$(sel) { return [...document.querySelectorAll(sel)]; }
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pickDeck(mode, size) {
+  let pool;
+  if (mode === 'random') pool = CARDS;
+  else if (mode === 'statement') pool = CARDS.filter(c => c.type === 'statement');
+  else if (mode === 'question') pool = CARDS.filter(c => c.type === 'question');
+  else pool = CARDS.filter(c => c.category === mode); // category name
+  const shuffled = shuffle(pool);
+  return shuffled.slice(0, Math.min(size, shuffled.length));
+}
+function fmtTime(ms) {
+  const s = Math.floor(ms / 1000);
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+}
+
+// ==================== VIEW SWITCHING ====================
+function showView(v) {
+  state.view = v;
+  $('#home-view').style.display = v === 'home' ? 'block' : 'none';
+  $('#session-view').style.display = v === 'session' ? 'flex' : 'none';
+  $('#summary-view').style.display = v === 'summary' ? 'flex' : 'none';
+  window.scrollTo(0,0);
+}
+
+// ==================== HOME ====================
+function renderHome() {
+  $$('.pill').forEach(p => {
+    p.classList.toggle('active', parseInt(p.dataset.size,10) === state.sessionSize);
+  });
+  $('#learning-count').textContent = state.learningAll.size;
+  $('#practice-incorrect-btn').disabled = state.learningAll.size === 0;
+
+  // Populate categories
+  const list = $('#category-list');
+  if (!list.children.length) {
+    CATEGORIES.forEach(cat => {
+      const count = CARDS.filter(c => c.category === cat).length;
+      const btn = document.createElement('button');
+      btn.className = 'category-btn';
+      btn.innerHTML = `<span>${cat}</span><span class="count">${count}</span>`;
+      btn.addEventListener('click', () => startSession(cat));
+      list.appendChild(btn);
+    });
+  }
+}
+
+$$('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    state.sessionSize = parseInt(p.dataset.size, 10);
+    localStorage.setItem(LS.sessionSize, state.sessionSize);
+    renderHome();
+  });
+});
+
+$$('.mode-card[data-mode]').forEach(card => {
+  card.addEventListener('click', () => {
+    const mode = card.dataset.mode;
+    if (mode === 'category') {
+      const list = $('#category-list');
+      list.classList.toggle('open');
+      const chev = $('#category-chevron svg');
+      chev.style.transform = list.classList.contains('open') ? 'rotate(180deg)' : '';
+      return;
+    }
+    startSession(mode);
+  });
+});
+
+$('#practice-incorrect-btn').addEventListener('click', () => {
+  startIncorrectSession();
+});
+
+$('#print-btn').addEventListener('click', () => {
+  buildPrintRoot(CARDS);
+  document.body.classList.add('printing');
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => document.body.classList.remove('printing'), 200);
+  }, 100);
+});
+
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('printing');
+});
+
+// ==================== SESSION ====================
+function startSession(mode) {
+  state.selectedMode = mode;
+  state.deck = pickDeck(mode, state.sessionSize);
+  state.sessionOriginalDeck = [...state.deck]; // capture before learning push-backs mutate it
+  state.index = 0;
+  state.isFlipped = false;
+  state.sessionResults = { known: [], learning: [] };
+  state.sessionStart = Date.now();
+  showView('session');
+  renderCard();
+}
+
+function startIncorrectSession() {
+  const learningCards = CARDS.filter(c => state.learningAll.has(c.id));
+  if (!learningCards.length) return;
+  state.selectedMode = 'incorrect';
+  state.deck = shuffle(learningCards);
+  state.sessionOriginalDeck = [...state.deck];
+  state.index = 0;
+  state.isFlipped = false;
+  state.sessionResults = { known: [], learning: [] };
+  state.sessionStart = Date.now();
+  showView('session');
+  renderCard();
+}
+
+function renderCard() {
+  const total = state.deck.length;
+  const i = state.index;
+  $('#prog-current').textContent = i + 1;
+  $('#prog-total').textContent = total;
+  $('#progress-fill').style.width = `${((i) / total) * 100}%`;
+
+  // Enable/disable Previous/Next
+  $('#btn-prev').disabled = i === 0;
+  $('#btn-next').innerHTML = (i >= total - 1)
+    ? `Finish <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`
+    : `Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+
+  const card = state.deck[i];
+  const isQ = card.type === 'question';
+  const stack = $('#card-stack');
+  stack.innerHTML = `
+    <div class="card" id="card-el">
+      <div class="card-face front ${isQ ? 'is-question' : ''}">
+        <div class="card-corners"><span></span><span></span><span></span><span></span></div>
+        <div class="category-tag">${card.category}</div>
+        <div class="top-corner">${i + 1}/${total}</div>
+        ${card.ref && !isQ ? `<div class="ref-tag">${card.ref}</div>` : ''}
+        <div class="card-body"><div class="card-body-text">${card.front}</div></div>
+        <div class="tap-hint">Tap to flip</div>
+      </div>
+      <div class="card-face back ${isQ ? 'is-question' : ''}">
+        <div class="card-corners"><span></span><span></span><span></span><span></span></div>
+        <div class="category-tag">${card.category}</div>
+        <div class="top-corner">${i + 1}/${total}</div>
+        ${card.ref && isQ ? `<div class="ref-tag">${card.ref}</div>` : ''}
+        <div class="card-body"><div class="card-body-text">${card.back}</div></div>
+        <div class="tap-hint">${isQ ? 'Answer' : 'Definition'}</div>
+      </div>
+    </div>
+    <div class="swipe-overlay" id="swipe-overlay"><span class="swipe-label" id="swipe-label"></span></div>`;
+  // Scale back text for long definitions
+  const backEl = document.querySelector('#card-el .card-face.back .card-body-text');
+  if (backEl) {
+    const len = backEl.textContent.length;
+    backEl.dataset.len = len > 220 ? 'long' : len > 120 ? 'med' : 'short';
+  }
+  state.isFlipped = false;
+  attachCardEvents();
+}
+
+function attachCardEvents() {
+  const card = $('#card-el');
+  if (!card) return;
+  const overlay = document.getElementById('swipe-overlay');
+
+  let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false, moved = false;
+  const threshold = Math.min(120, window.innerWidth * 0.28);
+
+  const lbl = document.getElementById('swipe-label');
+
+  function clearOverlay() {
+    if (overlay) {
+      overlay.style.transform = '';
+      overlay.style.borderColor = 'transparent';
+      overlay.style.background = 'transparent';
+    }
+    if (lbl) lbl.style.opacity = 0;
+    document.querySelectorAll('#card-el .card-face').forEach(f => f.style.filter = '');
+  }
+
+  function onStart(x, y) {
+    startX = x; startY = y; dx = 0; dy = 0; dragging = true; moved = false;
+    card.classList.add('dragging');
+  }
+  function onMove(x, y) {
+    if (!dragging) return;
+    dx = x - startX; dy = y - startY;
+    if (Math.abs(dx) > 14 || Math.abs(dy) > 14) moved = true;
+    // Don't drag if mostly vertical
+    if (Math.abs(dy) > Math.abs(dx) * 1.5 && Math.abs(dy) > 30) {
+      dragging = false;
+      card.classList.remove('dragging');
+      card.style.transform = state.isFlipped ? 'rotateY(180deg)' : '';
+      clearOverlay();
+      return;
+    }
+    const rot = dx * 0.05;
+    const base = state.isFlipped ? 180 : 0;
+    card.style.transform = `translateX(${dx}px) rotate(${rot}deg) rotateY(${base}deg)`;
+    const ratio = Math.min(1, Math.abs(dx) / threshold);
+    if (overlay) {
+      // Overlay follows the card exactly
+      overlay.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+      if (dx > 0) {
+        overlay.style.borderColor = `rgba(34,197,94,${ratio})`;
+        overlay.style.background = `rgba(34,197,94,${Math.min(ratio * 0.18, 0.22)})`;
+        if (lbl) { lbl.style.opacity = ratio; lbl.style.color = '#22c55e'; lbl.textContent = 'KNOWN'; }
+      } else if (dx < 0) {
+        overlay.style.borderColor = `rgba(239,68,68,${ratio})`;
+        overlay.style.background = `rgba(239,68,68,${Math.min(ratio * 0.18, 0.22)})`;
+        if (lbl) { lbl.style.opacity = ratio; lbl.style.color = '#ef4444'; lbl.textContent = 'LEARNING'; }
+      } else {
+        clearOverlay();
+      }
+      // Blur card text proportionally
+      const blurPx = ratio * 8;
+      document.querySelectorAll('#card-el .card-face').forEach(f => {
+        f.style.filter = blurPx > 0.3 ? `blur(${blurPx.toFixed(1)}px)` : '';
+      });
+    }
+  }
+  function onEnd() {
+    if (!dragging) return;
+    dragging = false;
+    card.classList.remove('dragging');
+    if (Math.abs(dx) >= threshold) {
+      if (dx > 0) commitSwipe('known');
+      else commitSwipe('learning');
+    } else if (!moved) {
+      // Pure tap — clear inline style so CSS class controls the transform
+      card.style.transform = '';
+      clearOverlay();
+      flipCard();
+    } else {
+      // Dragged but didn't reach threshold — snap back to correct position
+      card.style.transform = state.isFlipped ? 'rotateY(180deg)' : '';
+      clearOverlay();
+    }
+  }
+
+  // Track last touch time to suppress ghost mouse events on mobile
+  let lastTouchTime = 0;
+
+  // Touch
+  card.addEventListener('touchstart', e => {
+    lastTouchTime = Date.now();
+    onStart(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  card.addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  card.addEventListener('touchend', e => {
+    lastTouchTime = Date.now();
+    e.preventDefault(); // stop browser firing ghost mousedown/mouseup
+    onEnd();
+  });
+  card.addEventListener('touchcancel', () => { lastTouchTime = Date.now(); onEnd(); });
+
+  // Mouse — ignored within 500ms of a touch event (prevents ghost-click double-flip)
+  card.addEventListener('mousedown', e => {
+    if (Date.now() - lastTouchTime < 500) return;
+    e.preventDefault();
+    onStart(e.clientX, e.clientY);
+  });
+  window.addEventListener('mousemove', e => {
+    if (dragging && Date.now() - lastTouchTime >= 500) onMove(e.clientX, e.clientY);
+  });
+  window.addEventListener('mouseup', () => {
+    if (dragging && Date.now() - lastTouchTime >= 500) onEnd();
+  });
+}
+
+function flipCard() {
+  const card = $('#card-el');
+  if (!card) return;
+  state.isFlipped = !state.isFlipped;
+  card.classList.toggle('flipped', state.isFlipped);
+}
+
+function commitSwipe(verdict) {
+  const card = $('#card-el');
+  if (!card) return;
+  const ov = document.getElementById('swipe-overlay');
+  if (ov) {
+    ov.style.transform = ''; ov.style.borderColor = 'transparent'; ov.style.background = 'transparent';
+    const sl = document.getElementById('swipe-label');
+    if (sl) sl.style.opacity = 0;
+  }
+  document.querySelectorAll('#card-el .card-face').forEach(f => f.style.filter = '');
+  const current = state.deck[state.index];
+
+  if (verdict === 'known') {
+    card.classList.add('fly-right');
+    state.sessionResults.known.push(current.id);
+    state.knownAll.add(current.id);
+    state.learningAll.delete(current.id);
+  } else {
+    card.classList.add('fly-left');
+    state.sessionResults.learning.push(current.id);
+    state.learningAll.add(current.id);
+    state.knownAll.delete(current.id);
+    // Push back to end of current deck (if not last card)
+    if (state.index < state.deck.length - 1) {
+      state.deck.push(current);
+    }
+  }
+  saveProgress();
+
+  setTimeout(() => {
+    state.index += 1;
+    if (state.index >= state.deck.length) {
+      endSession();
+    } else {
+      renderCard();
+    }
+  }, 350);
+}
+
+$('#btn-prev').addEventListener('click', () => navigatePrev());
+$('#btn-next').addEventListener('click', () => navigateNext());
+
+function navigatePrev() {
+  if (state.index === 0) return;
+  state.index -= 1;
+  renderCard();
+}
+function navigateNext() {
+  if (state.index >= state.deck.length - 1) {
+    // At the end — finish the session
+    endSession();
+    return;
+  }
+  state.index += 1;
+  renderCard();
+}
+$('#end-session-btn').addEventListener('click', () => {
+  if (state.sessionResults.known.length || state.sessionResults.learning.length) {
+    endSession();
+  } else {
+    showView('home');
+    renderHome();
+  }
+});
+
+// ==================== SUMMARY ====================
+function endSession() {
+  const r = state.sessionResults;
+  // Denominator = original deck size (unique cards shown this session)
+  const total = (state.sessionOriginalDeck || []).length || (r.known.length + r.learning.length);
+  const knownCount = r.known.length; // each card appears once here (only learning cards push back)
+  const pct = total ? Math.round(knownCount / total * 100) : 0;
+  const elapsed = Date.now() - state.sessionStart;
+
+  // Title / message
+  let title, msg;
+  if (pct >= 90) { title = 'Excellent work'; msg = "You're exam-ready on this topic."; }
+  else if (pct >= 70) { title = 'Strong session'; msg = 'A few weak spots — review and run it back.'; }
+  else if (pct >= 40) { title = 'Good progress'; msg = 'Focus on the topics below and try again.'; }
+  else { title = 'Early days'; msg = "Keep practising — it'll click."; }
+  $('#summary-title').textContent = title;
+  $('#summary-message').textContent = msg;
+
+  $('#stat-known').textContent = knownCount;
+  $('#stat-learning').textContent = total - knownCount; // everything not definitively known
+  $('#stat-time').textContent = fmtTime(elapsed);
+
+  // Score ring
+  $('#score-pct').textContent = pct + '%';
+  const circ = 2 * Math.PI * 56;
+  const offset = circ - (pct / 100) * circ;
+  const ring = $('#score-fill');
+  ring.setAttribute('stroke-dasharray', circ);
+  ring.setAttribute('stroke-dashoffset', circ);
+  const color = pct >= 70 ? '#22c55e' : pct >= 40 ? '#C9A961' : '#ef4444';
+  ring.setAttribute('stroke', color);
+  setTimeout(() => { ring.setAttribute('stroke-dashoffset', offset); }, 80);
+
+  // Focus list — learning + unanswered cards grouped by category
+  const focusList = $('#focus-list');
+  const knownIds = new Set(r.known);
+  const learningIds = new Set(r.learning);
+
+  // Unique not-known IDs: swiped-left (and not later resolved) + never answered (skipped via Next)
+  const notKnownIds = new Set();
+  r.learning.forEach(id => { if (!knownIds.has(id)) notKnownIds.add(id); });
+  (state.sessionOriginalDeck || []).forEach(c => {
+    if (!knownIds.has(c.id) && !learningIds.has(c.id)) notKnownIds.add(c.id);
+  });
+
+  if (notKnownIds.size === 0) {
+    focusList.innerHTML = '<div class="empty-state">Perfect session — every card known!</div>';
+  } else {
+    const byCat = {};
+    notKnownIds.forEach(id => {
+      const c = CARDS.find(x => x.id === id);
+      if (c) byCat[c.category] = (byCat[c.category] || 0) + 1;
+    });
+    const sorted = Object.entries(byCat).sort((a,b) => b[1] - a[1]);
+    focusList.innerHTML = sorted.map(([cat, n]) =>
+      `<div class="focus-item"><span>${cat}</span><span class="count">${n}</span></div>`
+    ).join('');
+  }
+
+  showView('summary');
+}
+
+$('#summary-home-btn').addEventListener('click', () => { showView('home'); renderHome(); });
+$('#summary-home-btn2').addEventListener('click', () => { showView('home'); renderHome(); });
+$('#practice-incorrect-summary').addEventListener('click', () => {
+  if (state.learningAll.size > 0) startIncorrectSession();
+  else { showView('home'); renderHome(); }
+});
+
+// ==================== SETTINGS ====================
+$('#settings-btn').addEventListener('click', () => $('#settings-modal').classList.add('open'));
+$('#settings-close-btn').addEventListener('click', () => $('#settings-modal').classList.remove('open'));
+$('#settings-modal').addEventListener('click', e => { if (e.target.id === 'settings-modal') e.currentTarget.classList.remove('open'); });
+
+$$('#theme-toggle .toggle-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.dataset.theme;
+    setTheme(t);
+  });
+});
+$$('#size-toggle .toggle-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const s = btn.dataset.size;
+    setTextSize(s);
+  });
+});
+
+function setTheme(t) {
+  document.body.classList.toggle('light', t === 'light');
+  localStorage.setItem(LS.theme, t);
+  $$('#theme-toggle .toggle-opt').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+  document.querySelector('meta[name=theme-color]').setAttribute('content', t === 'light' ? '#F4F0E8' : '#1E3050');
+}
+function setTextSize(s) {
+  document.body.classList.toggle('text-large', s === 'large');
+  localStorage.setItem(LS.textsize, s);
+  $$('#size-toggle .toggle-opt').forEach(b => b.classList.toggle('active', b.dataset.size === s));
+}
+
+$('#reset-progress-btn').addEventListener('click', () => {
+  if (confirm('Clear all known and still-learning marks? This cannot be undone.')) {
+    state.knownAll.clear();
+    state.learningAll.clear();
+    saveProgress();
+    renderHome();
+  }
+});
+$('#replay-tutorial-btn').addEventListener('click', () => {
+  $('#settings-modal').classList.remove('open');
+  $('#splash').classList.add('open');
+});
+$('#version-string').textContent = `v${VERSION}`;
+
+// ==================== SPLASH ====================
+$('#splash-cta').addEventListener('click', () => {
+  $('#splash').classList.remove('open');
+  localStorage.setItem(LS.splash, '1');
+});
+$('#show-tutorial').addEventListener('click', () => $('#splash').classList.add('open'));
+$('#show-how-to-app').addEventListener('click', () => $('#how-to-app-modal').classList.add('open'));
+$('#how-to-app-close').addEventListener('click', () => $('#how-to-app-modal').classList.remove('open'));
+$('#how-to-app-modal').addEventListener('click', e => { if (e.target.id === 'how-to-app-modal') e.currentTarget.classList.remove('open'); });
+
+// ==================== PRINT ====================
+function buildPrintRoot(cardSet) {
+  const root = $('#print-root');
+  // Cover page
+  let html = `
+    <div class="print-cover">
+      <h1>FASEA Exam Flip Cards</h1>
+      <div class="cover-rule"></div>
+      <p><strong>${cardSet.length} cards</strong> covering Best Interests Duty, Code of Ethics, APPs, Disclosure, Licensing, AML/CTF and more.</p>
+      <p style="font-size: 10pt;">Each card is laid out side-by-side: <strong>front on the left</strong>, <strong>back on the right</strong>. Cut along the solid lines, fold along the dashed centre line, and you have double-sided flashcards.</p>
+      <p class="cover-note">Independent study tool — not affiliated with Treasury, ASIC, ACER or any official examining body.</p>
+    </div>`;
+
+  // 4 cards per page (2x2 grid)
+  for (let i = 0; i < cardSet.length; i += 4) {
+    const batch = cardSet.slice(i, i + 4);
+    html += '<div class="print-page">';
+    batch.forEach(card => {
+      const isQ = card.type === 'question';
+      const frontCls = isQ ? 'print-card-text question-front' : 'print-card-text';
+      const backCls = isQ ? 'print-card-text question-back' : 'print-card-text back';
+      html += `
+        <div class="print-card">
+          <div class="print-card-side front">
+            <div class="print-card-meta"><span class="num">#${card.id}</span><span>${card.category}</span></div>
+            <div class="print-card-body"><div class="${frontCls}">${card.front}</div></div>
+            <div class="print-side-label front-label">Front</div>
+          </div>
+          <div class="print-card-side back">
+            <div class="print-card-meta"><span>${card.ref || ''}</span><span class="num">#${card.id}</span></div>
+            <div class="print-card-body"><div class="${backCls}">${card.back}</div></div>
+            <div class="print-side-label back-label">Back</div>
+          </div>
+        </div>`;
+    });
+    // pad with empty cards
+    for (let k = batch.length; k < 4; k++) html += '<div></div>';
+    html += '</div>';
+  }
+  root.innerHTML = html;
+}
+
+// ==================== INIT ====================
+function detectDevice() {
+  const isMobile = window.matchMedia('(pointer: coarse)').matches
+    || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  document.body.classList.toggle('is-mobile', isMobile);
+  document.body.classList.toggle('is-desktop', !isMobile);
+}
+
+function init() {
+  detectDevice();
+  setTheme(localStorage.getItem(LS.theme) || 'dark');
+  setTextSize(localStorage.getItem(LS.textsize) || 'normal');
+  renderHome();
+  showView('home');
+  if (!localStorage.getItem(LS.splash)) {
+    $('#splash').classList.add('open');
+  }
+}
+
+init();
+</script>
+</body>
+</html>
