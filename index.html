@@ -66,8 +66,8 @@
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    font-size: calc(15px * var(--font-scale));
-    line-height: 1.5;
+    font-size: calc(17px * var(--font-scale));
+    line-height: 1.6;
     transition: background 0.3s ease, color 0.3s ease;
   }
 
@@ -88,12 +88,12 @@
       radial-gradient(ellipse 60% 40% at 100% 100%, rgba(201,169,97,0.04), transparent 60%);
   }
 
-  .app { position: relative; z-index: 1; max-width: 540px; margin: 0 auto; padding: 0 20px 80px; min-height: 100vh; min-height: 100dvh; padding-top: env(safe-area-inset-top, 0px); }
+  .app { position: relative; z-index: 1; width: 100%; padding: 0 22px 80px; min-height: 100vh; min-height: 100dvh; padding-top: env(safe-area-inset-top, 0px); }
 
   /* Header */
   .header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 0 8px;
+    padding: 22px 0 10px;
   }
   .brand { font-family: var(--serif); font-size: calc(20px * var(--font-scale)); letter-spacing: 0.5px; color: var(--text); display: flex; align-items: center; gap: 8px; }
   .brand-mark { width: 22px; height: 22px; border-radius: 50%; background: conic-gradient(from 220deg, var(--accent), var(--gold), var(--accent)); position: relative; }
@@ -112,13 +112,13 @@
   .icon-btn svg { width: 18px; height: 18px; }
 
   /* Hero / title */
-  .hero { text-align: center; padding: 18px 4px 24px; }
+  .hero { text-align: center; padding: 26px 4px 32px; }
   .hero h1 {
     font-family: var(--serif);
     font-weight: 600;
-    font-size: calc(38px * var(--font-scale));
+    font-size: calc(46px * var(--font-scale));
     line-height: 1.05;
-    margin: 0 0 6px;
+    margin: 0 0 8px;
     color: var(--text);
     letter-spacing: -0.5px;
   }
@@ -127,14 +127,14 @@
     background: var(--accent); margin: 10px auto 14px; border-radius: 2px;
   }
   .hero .disclaimer {
-    font-size: calc(11.5px * var(--font-scale));
+    font-size: calc(13px * var(--font-scale));
     color: var(--text-faint);
     max-width: 360px; margin: 0 auto;
     line-height: 1.5;
   }
   .hero .help-link {
-    display: inline-block; margin-top: 10px;
-    font-size: calc(12px * var(--font-scale));
+    display: inline-block; margin-top: 12px;
+    font-size: calc(14px * var(--font-scale));
     color: var(--text-muted);
     text-decoration: none;
     border-bottom: 1px dotted var(--text-faint);
@@ -143,7 +143,7 @@
   .hero .help-link:hover { color: var(--text); }
   .how-to-app-link {
     font-family: var(--sans);
-    font-size: calc(13px * var(--font-scale));
+    font-size: calc(15px * var(--font-scale));
     color: var(--text-muted);
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -155,23 +155,23 @@
 
   /* Section labels */
   .section-label {
-    font-size: calc(11px * var(--font-scale));
+    font-size: calc(13px * var(--font-scale));
     font-weight: 600;
     letter-spacing: 1.2px;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin: 26px 0 12px;
+    margin: 32px 0 14px;
   }
 
   /* Pill row (session size) */
-  .pill-row { display: flex; gap: 8px; }
+  .pill-row { display: flex; gap: 10px; }
   .pill {
-    flex: 1; padding: 12px 0;
+    flex: 1; padding: 16px 0;
     border: 1px solid var(--surface-border);
     background: var(--surface);
     color: var(--text);
     font-family: var(--sans);
-    font-size: calc(15px * var(--font-scale));
+    font-size: calc(17px * var(--font-scale));
     font-weight: 600;
     border-radius: 999px;
     cursor: pointer;
@@ -186,10 +186,10 @@
   }
 
   /* Mode cards */
-  .mode-list { display: flex; flex-direction: column; gap: 10px; }
+  .mode-list { display: flex; flex-direction: column; gap: 12px; }
   .mode-card {
-    display: flex; align-items: center; gap: 14px;
-    padding: 16px 18px;
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px 18px;
     background: var(--surface);
     border: 1px solid var(--surface-border);
     border-left: 4px solid transparent;
@@ -208,15 +208,15 @@
   .mode-card[data-mode="category"] { border-left-color: #a08fc4; }
 
   .mode-icon {
-    width: 44px; height: 44px; border-radius: 12px;
+    width: 52px; height: 52px; border-radius: 14px;
     background: var(--surface-2);
     display: inline-flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
-  .mode-icon svg { width: 22px; height: 22px; color: var(--text); }
+  .mode-icon svg { width: 26px; height: 26px; color: var(--text); }
   .mode-text { flex: 1; min-width: 0; }
-  .mode-title { font-weight: 600; font-size: calc(15px * var(--font-scale)); margin: 0 0 2px; }
-  .mode-sub { font-size: calc(12.5px * var(--font-scale)); color: var(--text-muted); }
+  .mode-title { font-weight: 600; font-size: calc(17px * var(--font-scale)); margin: 0 0 4px; }
+  .mode-sub { font-size: calc(14px * var(--font-scale)); color: var(--text-muted); }
   .mode-arrow { color: var(--text-faint); flex-shrink: 0; }
 
   /* Category list (collapsible) */
@@ -231,24 +231,24 @@
     cursor: pointer;
     color: var(--text);
     font-family: inherit;
-    font-size: calc(14px * var(--font-scale));
+    font-size: calc(15.5px * var(--font-scale));
     text-align: left;
     transition: all 0.15s ease;
   }
   .category-btn:hover { border-color: var(--accent); }
-  .category-btn .count { color: var(--text-muted); font-size: calc(12px * var(--font-scale)); font-weight: 600; }
+  .category-btn .count { color: var(--text-muted); font-size: calc(13.5px * var(--font-scale)); font-weight: 600; }
 
   /* Action buttons */
-  .action-row { display: flex; flex-direction: column; gap: 10px; }
+  .action-row { display: flex; flex-direction: column; gap: 12px; }
   .action-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 14px 18px;
+    padding: 17px 18px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--surface-border);
     background: var(--surface);
     color: var(--text);
     font-family: inherit;
-    font-size: calc(14px * var(--font-scale));
+    font-size: calc(16px * var(--font-scale));
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -836,7 +836,7 @@
 
   /* Responsive tweaks */
   @media (min-width: 600px) {
-    .hero h1 { font-size: calc(44px * var(--font-scale)); }
+    .hero h1 { font-size: calc(52px * var(--font-scale)); }
   }
 
 </style>
