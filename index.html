@@ -282,14 +282,14 @@
   .progress-bar { height: 3px; background: var(--surface); border-radius: 999px; overflow: hidden; }
   .progress-bar-fill { height: 100%; background: var(--accent); transition: width 0.3s ease; }
   .session-card-area {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    padding: 12px 20px 8px; min-height: 0; overflow: hidden;
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center;
+    padding: 10px 18px 8px; min-height: 0;
   }
   .card-stack {
     position: relative; perspective: 1200px;
-    width: min(calc(100vw - 40px), 420px);
-    height: min(calc(100vh - 210px), 570px);
-    flex-shrink: 0;
+    width: 100%; max-width: 480px;
+    flex: 1; min-height: 0;
     user-select: none; -webkit-user-select: none;
   }
   .session-footer {
@@ -1457,19 +1457,34 @@ function attachCardEvents() {
     }
   }
 
+  // Track last touch time to suppress ghost mouse events on mobile
+  let lastTouchTime = 0;
+
   // Touch
-  card.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  card.addEventListener('touchstart', e => {
+    lastTouchTime = Date.now();
+    onStart(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
   card.addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-  card.addEventListener('touchend', onEnd);
-  card.addEventListener('touchcancel', onEnd);
+  card.addEventListener('touchend', e => {
+    lastTouchTime = Date.now();
+    e.preventDefault(); // stop browser firing ghost mousedown/mouseup
+    onEnd();
+  });
+  card.addEventListener('touchcancel', () => { lastTouchTime = Date.now(); onEnd(); });
 
-  // Mouse
-  card.addEventListener('mousedown', e => { e.preventDefault(); onStart(e.clientX, e.clientY); });
-  window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX, e.clientY); });
-  window.addEventListener('mouseup', () => { if (dragging) onEnd(); });
-
-  // Click (fallback flip on desktop if mouseup didn't move)
-  // handled via onEnd's !moved branch
+  // Mouse — ignored within 500ms of a touch event (prevents ghost-click double-flip)
+  card.addEventListener('mousedown', e => {
+    if (Date.now() - lastTouchTime < 500) return;
+    e.preventDefault();
+    onStart(e.clientX, e.clientY);
+  });
+  window.addEventListener('mousemove', e => {
+    if (dragging && Date.now() - lastTouchTime >= 500) onMove(e.clientX, e.clientY);
+  });
+  window.addEventListener('mouseup', () => {
+    if (dragging && Date.now() - lastTouchTime >= 500) onEnd();
+  });
 }
 
 function flipCard() {
