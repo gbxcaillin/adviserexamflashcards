@@ -58,7 +58,7 @@
   /* ── Responsive: desktop/laptop (fine pointer + wide screen) ── */
   @media (min-width: 600px) and (pointer: fine) {
     :root { --font-scale: 1.15; }
-    .hero h1 { font-size: calc(36px * var(--font-scale)); }
+    .hero h1 { font-size: calc(30px * var(--font-scale)); }
     body.text-large { --font-scale: 1.35; }
   }
   /* ── Mobile: touch device OR narrow viewport keeps large scale ── */
@@ -120,29 +120,35 @@
   .icon-btn svg { width: 18px; height: 18px; }
 
   /* Hero / title */
-  .hero { text-align: center; padding: 8px 4px 8px; }
+  .hero { text-align: center; padding: 6px 4px 6px; }
   .hero-title-wrap {
-    position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .hero-title-wrap::before {
+    content: '';
+    width: 34px;
+    flex-shrink: 0;
   }
   .hero-title-wrap .icon-btn {
-    position: absolute;
-    right: -46px;
-    top: 50%;
-    transform: translateY(-50%);
+    flex-shrink: 0;
+    position: static;
+    transform: none;
   }
   .hero h1 {
     font-family: var(--serif);
     font-weight: 600;
-    font-size: calc(32px * var(--font-scale));
+    font-size: calc(27px * var(--font-scale));
     line-height: 1.05;
-    margin: 0 0 6px;
+    margin: 0 0 4px;
     color: var(--text);
     letter-spacing: -0.5px;
   }
   .hero .accent-rule {
-    display: inline-block; width: 44px; height: 2px;
-    background: var(--accent); margin: 4px auto 6px; border-radius: 2px;
+    display: inline-block; width: 38px; height: 2px;
+    background: var(--accent); margin: 3px auto 5px; border-radius: 2px;
   }
   .hero .disclaimer {
     font-size: calc(13px * var(--font-scale));
@@ -151,7 +157,7 @@
     line-height: 1.4;
   }
   /* Card source status bar */
-  .status-bar { display: flex; align-items: center; justify-content: center; margin: 4px 0 0; }
+  .status-bar { display: flex; align-items: center; justify-content: center; margin: 3px 0 0; }
   .status-pill {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 5px 14px; border-radius: 999px;
@@ -169,7 +175,7 @@
   @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   .hero .help-link {
-    display: inline-block; margin-top: 6px;
+    display: inline-block; margin-top: 4px;
     font-size: calc(14px * var(--font-scale));
     color: var(--text-muted);
     text-decoration: none;
@@ -196,18 +202,18 @@
     letter-spacing: 1.2px;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin: 14px 0 7px;
+    margin: 10px 0 5px;
   }
 
   /* Pill row (session size) */
-  .pill-row { display: flex; gap: 9px; }
+  .pill-row { display: flex; gap: 7px; }
   .pill {
-    flex: 1; padding: 11px 0;
+    flex: 1; padding: 9px 0;
     border: 1px solid var(--surface-border);
     background: var(--surface);
     color: var(--text);
     font-family: var(--sans);
-    font-size: calc(15px * var(--font-scale));
+    font-size: calc(13px * var(--font-scale));
     font-weight: 600;
     border-radius: 999px;
     cursor: pointer;
@@ -222,10 +228,10 @@
   }
 
   /* Mode cards */
-  .mode-list { display: flex; flex-direction: column; gap: 7px; }
+  .mode-list { display: flex; flex-direction: column; gap: 5px; }
   .mode-card {
-    display: flex; align-items: center; gap: 13px;
-    padding: 13px 16px;
+    display: flex; align-items: center; gap: 11px;
+    padding: 11px 14px;
     background: var(--surface);
     border: 1px solid var(--surface-border);
     border-left: 4px solid transparent;
@@ -244,15 +250,15 @@
   .mode-card[data-mode="category"] { border-left-color: #a08fc4; }
 
   .mode-icon {
-    width: 38px; height: 38px; border-radius: 10px;
+    width: 32px; height: 32px; border-radius: 8px;
     background: var(--surface-2);
     display: inline-flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
-  .mode-icon svg { width: 20px; height: 20px; color: var(--text); }
+  .mode-icon svg { width: 17px; height: 17px; color: var(--text); }
   .mode-text { flex: 1; min-width: 0; }
-  .mode-title { font-weight: 600; font-size: calc(15px * var(--font-scale)); margin: 0 0 2px; }
-  .mode-sub { font-size: calc(12px * var(--font-scale)); color: var(--text-muted); }
+  .mode-title { font-weight: 600; font-size: calc(14px * var(--font-scale)); margin: 0 0 1px; }
+  .mode-sub { font-size: calc(11px * var(--font-scale)); color: var(--text-muted); }
   .mode-arrow { color: var(--text-faint); flex-shrink: 0; }
 
   /* Category list (collapsible) */
@@ -260,31 +266,31 @@
   .category-list.open { display: flex; }
   .category-btn {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 14px;
+    padding: 8px 12px;
     background: var(--surface-2);
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-sm);
     cursor: pointer;
     color: var(--text);
     font-family: inherit;
-    font-size: calc(13.5px * var(--font-scale));
+    font-size: calc(12px * var(--font-scale));
     text-align: left;
     transition: all 0.15s ease;
   }
   .category-btn:hover { border-color: var(--accent); }
-  .category-btn .count { color: var(--text-muted); font-size: calc(12px * var(--font-scale)); font-weight: 600; }
+  .category-btn .count { color: var(--text-muted); font-size: calc(11px * var(--font-scale)); font-weight: 600; }
 
   /* Action buttons */
-  .action-row { display: flex; flex-direction: column; gap: 7px; }
+  .action-row { display: flex; flex-direction: column; gap: 5px; }
   .action-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--surface-border);
     background: var(--surface);
     color: var(--text);
     font-family: inherit;
-    font-size: calc(14px * var(--font-scale));
+    font-size: calc(13px * var(--font-scale));
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -937,7 +943,7 @@
 
   /* Responsive tweaks */
   @media (min-width: 600px) {
-    .hero h1 { font-size: calc(44px * var(--font-scale)); }
+    .hero h1 { font-size: calc(38px * var(--font-scale)); }
   }
 
 </style>
