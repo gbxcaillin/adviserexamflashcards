@@ -1164,20 +1164,6 @@
     </div>
 
     <div class="setting-row">
-      <div style="flex:1;min-width:0;">
-        <div class="setting-label">Google Sheet CSV URL</div>
-        <div class="setting-sub">Paste the published CSV link to load all 362 cards</div>
-        <input type="url" id="sheet-url-input" placeholder="https://docs.google.com/spreadsheets/..."
-          style="width:100%;margin-top:8px;padding:10px 12px;border-radius:8px;
-            border:1px solid var(--surface-border);background:var(--surface-2);
-            color:var(--text);font-family:var(--sans);font-size:13px;box-sizing:border-box;" />
-      </div>
-    </div>
-    <button class="action-btn primary" id="load-sheet-btn" style="width:100%;margin:10px 0 4px;">
-      ↓ Load cards from Google Sheets
-    </button>
-    <div id="sheet-load-status" style="text-align:center;font-size:12px;color:var(--text-muted);min-height:18px;margin-bottom:6px;"></div>
-    <div class="setting-row">
       <div>
         <div class="setting-label">Version</div>
         <div class="setting-sub" id="version-string">1.2.0</div>
@@ -1819,27 +1805,6 @@ $('#reset-progress-btn').addEventListener('click', () => {
     renderHome();
   }
 });
-$('#load-sheet-btn').addEventListener('click', () => {
-  const urlEl = $('#sheet-url-input');
-  const statusEl = $('#sheet-load-status');
-  const url = urlEl ? urlEl.value.trim() : '';
-  if (!url) { if (statusEl) statusEl.textContent = 'Paste a Google Sheets CSV URL first.'; return; }
-  localStorage.setItem(LS.sheetUrl, url);
-  if (statusEl) statusEl.textContent = 'Loading…';
-  updateCardSource('loading');
-  loadCardsFromSheet(url).then(cards => {
-    if (cards && cards.length > 0) {
-      activeCards = cards;
-      updateCardSource('sheet', cards.length);
-      if (statusEl) statusEl.textContent = '✓ ' + cards.length + ' cards loaded.';
-      renderHome();
-    } else {
-      activeCards = [...CARDS];
-      updateCardSource('offline', CARDS.length);
-      if (statusEl) statusEl.textContent = '✗ Could not load — check the URL is a published CSV link.';
-    }
-  });
-});
 
 $('#replay-tutorial-btn').addEventListener('click', () => {
   $('#settings-modal').classList.remove('open');
@@ -2006,26 +1971,17 @@ function init() {
   if (!localStorage.getItem(LS.splash)) {
     $('#splash').classList.add('open');
   }
-  // Pre-fill saved sheet URL in settings
-  const savedUrl = localStorage.getItem(LS.sheetUrl) || DEFAULT_SHEET_URL;
-  if (!localStorage.getItem(LS.sheetUrl)) localStorage.setItem(LS.sheetUrl, DEFAULT_SHEET_URL);
-  setTimeout(() => { const el = $('#sheet-url-input'); if (el) el.value = savedUrl; }, 50);
-  // Non-blocking: auto-load sheet if URL is already saved
-  if (savedUrl) {
-    updateCardSource('loading');
-    loadCardsFromSheet(savedUrl).then(cards => {
-      if (cards && cards.length > 0) {
-        activeCards = cards;
-        updateCardSource('sheet', cards.length);
-      } else {
-        activeCards = [...CARDS];
-        updateCardSource('offline', CARDS.length);
-      }
-      renderHome();
-    });
-    // Also run a load attempt via the load button on first open so status is visible
-    // (done silently above; user can re-trigger via Settings)
-  }
+  // Auto-load from hardcoded sheet URL on every startup
+  loadCardsFromSheet(DEFAULT_SHEET_URL).then(cards => {
+    if (cards && cards.length > 0) {
+      activeCards = cards;
+      updateCardSource('sheet', cards.length);
+    } else {
+      activeCards = [...CARDS];
+      updateCardSource('offline', CARDS.length);
+    }
+    renderHome();
+  });
 }
 
 init();
