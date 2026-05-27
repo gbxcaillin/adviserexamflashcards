@@ -340,8 +340,8 @@
     user-select: none; -webkit-user-select: none;
   }
   .session-footer {
-    flex-shrink: 0; padding: 0 20px;
-    padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px);
+    flex-shrink: 0; padding: 0 16px;
+    padding-bottom: max(env(safe-area-inset-bottom, 12px), 12px);
   }
   .card {
     position: absolute; inset: 0;
@@ -483,17 +483,17 @@
   }
 
   /* Session actions */
-  .swipe-help { text-align: center; color: var(--text-muted); font-size: calc(15px * var(--font-scale)); margin-bottom: 8px; line-height: 1.5; }
+  .swipe-help { text-align: center; color: var(--text-muted); font-size: calc(12px * var(--font-scale)); margin-bottom: 5px; line-height: 1.5; }
   .swipe-help .left-hint { color: var(--red-2); }
   .swipe-help .right-hint { color: var(--green-2); }
-  .button-row { display: flex; gap: 10px; }
+  .button-row { display: flex; gap: 7px; }
   .button-row .nav-btn {
     flex: 1;
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 14px 18px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 14px;
     border-radius: var(--radius-sm);
     font-family: inherit;
-    font-size: calc(14px * var(--font-scale));
+    font-size: calc(12px * var(--font-scale));
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1070,12 +1070,12 @@
       </div>
       <div class="button-row">
         <button class="nav-btn prev" id="btn-prev">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           Previous
         </button>
         <button class="nav-btn next" id="btn-next">
           Next
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
       </div>
     </div>
