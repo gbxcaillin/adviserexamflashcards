@@ -1432,6 +1432,7 @@ $$('.mode-card[data-mode]').forEach(card => {
     if (mode === 'category') {
       const list = $('#category-list');
       list.classList.toggle('open');
+      requestAnimationFrame(fitHomeToScreen);
       const chev = $('#category-chevron svg');
       chev.style.transform = list.classList.contains('open') ? 'rotate(180deg)' : '';
       return;
@@ -1878,6 +1879,19 @@ function buildPrintRoot(cardSet) {
   root.innerHTML = html;
 }
 
+// ==================== HOME FIT TO SCREEN ====================
+function fitHomeToScreen() {
+  const el = document.getElementById('home-view');
+  if (!el || el.style.display === 'none') return;
+  el.style.zoom = 1;
+  const availH = window.innerHeight;
+  const naturalH = el.scrollHeight;
+  if (naturalH > availH * 0.98) {
+    el.style.zoom = Math.max((availH / naturalH) * 0.96, 0.55);
+  }
+}
+window.addEventListener('resize', fitHomeToScreen);
+
 // ==================== GOOGLE SHEETS LOADING ====================
 function parseCSV(text) {
   const rows = []; let row = []; let cur = ''; let inQ = false;
@@ -1962,7 +1976,8 @@ function updateCardSource(src, count) {
   const pill = $('#status-pill');
   const txt  = $('#status-text');
   if (!pill || !txt) return;
-  pill.className = 'status-pill ' + (src === 'loading' ? 'offline' : src);
+  // CSS classes: offline | online (never expose 'sheet' or 'loading' to CSS)
+  pill.className = 'status-pill ' + (src === 'sheet' ? 'online' : 'offline');
   if (src === 'sheet') txt.textContent = count + ' cards · Online';
   else                 txt.textContent = (count || CARDS.length) + ' cards · Offline';
 }
