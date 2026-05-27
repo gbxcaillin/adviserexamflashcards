@@ -58,7 +58,7 @@
   /* ── Responsive: desktop/laptop (fine pointer + wide screen) ── */
   @media (min-width: 600px) and (pointer: fine) {
     :root { --font-scale: 1.15; }
-    .hero h1 { font-size: calc(42px * var(--font-scale)); }
+    .hero h1 { font-size: calc(36px * var(--font-scale)); }
     body.text-large { --font-scale: 1.35; }
   }
   /* ── Mobile: touch device OR narrow viewport keeps large scale ── */
@@ -120,19 +120,29 @@
   .icon-btn svg { width: 18px; height: 18px; }
 
   /* Hero / title */
-  .hero { text-align: center; padding: 16px 4px 18px; }
+  .hero { text-align: center; padding: 8px 4px 8px; }
+  .hero-title-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .hero-title-wrap .icon-btn {
+    position: absolute;
+    right: -46px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
   .hero h1 {
     font-family: var(--serif);
     font-weight: 600;
-    font-size: calc(38px * var(--font-scale));
+    font-size: calc(32px * var(--font-scale));
     line-height: 1.05;
-    margin: 0 0 8px;
+    margin: 0 0 6px;
     color: var(--text);
     letter-spacing: -0.5px;
   }
   .hero .accent-rule {
-    display: inline-block; width: 56px; height: 2px;
-    background: var(--accent); margin: 6px auto 10px; border-radius: 2px;
+    display: inline-block; width: 44px; height: 2px;
+    background: var(--accent); margin: 4px auto 6px; border-radius: 2px;
   }
   .hero .disclaimer {
     font-size: calc(13px * var(--font-scale));
@@ -141,7 +151,7 @@
     line-height: 1.4;
   }
   /* Card source status bar */
-  .status-bar { display: flex; align-items: center; justify-content: center; margin: 8px 0 2px; }
+  .status-bar { display: flex; align-items: center; justify-content: center; margin: 4px 0 0; }
   .status-pill {
     display: inline-flex; align-items: center; gap: 6px;
     padding: 5px 14px; border-radius: 999px;
@@ -159,7 +169,7 @@
   @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   .hero .help-link {
-    display: inline-block; margin-top: 12px;
+    display: inline-block; margin-top: 6px;
     font-size: calc(14px * var(--font-scale));
     color: var(--text-muted);
     text-decoration: none;
@@ -186,18 +196,18 @@
     letter-spacing: 1.2px;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin: 22px 0 10px;
+    margin: 14px 0 7px;
   }
 
   /* Pill row (session size) */
-  .pill-row { display: flex; gap: 12px; }
+  .pill-row { display: flex; gap: 9px; }
   .pill {
-    flex: 1; padding: 16px 0;
+    flex: 1; padding: 11px 0;
     border: 1px solid var(--surface-border);
     background: var(--surface);
     color: var(--text);
     font-family: var(--sans);
-    font-size: calc(17px * var(--font-scale));
+    font-size: calc(15px * var(--font-scale));
     font-weight: 600;
     border-radius: 999px;
     cursor: pointer;
@@ -212,10 +222,10 @@
   }
 
   /* Mode cards */
-  .mode-list { display: flex; flex-direction: column; gap: 10px; }
+  .mode-list { display: flex; flex-direction: column; gap: 7px; }
   .mode-card {
-    display: flex; align-items: center; gap: 16px;
-    padding: 18px 18px;
+    display: flex; align-items: center; gap: 13px;
+    padding: 13px 16px;
     background: var(--surface);
     border: 1px solid var(--surface-border);
     border-left: 4px solid transparent;
@@ -234,15 +244,15 @@
   .mode-card[data-mode="category"] { border-left-color: #a08fc4; }
 
   .mode-icon {
-    width: 46px; height: 46px; border-radius: 12px;
+    width: 38px; height: 38px; border-radius: 10px;
     background: var(--surface-2);
     display: inline-flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
-  .mode-icon svg { width: 24px; height: 24px; color: var(--text); }
+  .mode-icon svg { width: 20px; height: 20px; color: var(--text); }
   .mode-text { flex: 1; min-width: 0; }
-  .mode-title { font-weight: 600; font-size: calc(17px * var(--font-scale)); margin: 0 0 4px; }
-  .mode-sub { font-size: calc(14px * var(--font-scale)); color: var(--text-muted); }
+  .mode-title { font-weight: 600; font-size: calc(15px * var(--font-scale)); margin: 0 0 2px; }
+  .mode-sub { font-size: calc(12px * var(--font-scale)); color: var(--text-muted); }
   .mode-arrow { color: var(--text-faint); flex-shrink: 0; }
 
   /* Category list (collapsible) */
@@ -250,31 +260,31 @@
   .category-list.open { display: flex; }
   .category-btn {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 14px 16px;
+    padding: 10px 14px;
     background: var(--surface-2);
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-sm);
     cursor: pointer;
     color: var(--text);
     font-family: inherit;
-    font-size: calc(15.5px * var(--font-scale));
+    font-size: calc(13.5px * var(--font-scale));
     text-align: left;
     transition: all 0.15s ease;
   }
   .category-btn:hover { border-color: var(--accent); }
-  .category-btn .count { color: var(--text-muted); font-size: calc(13.5px * var(--font-scale)); font-weight: 600; }
+  .category-btn .count { color: var(--text-muted); font-size: calc(12px * var(--font-scale)); font-weight: 600; }
 
   /* Action buttons */
-  .action-row { display: flex; flex-direction: column; gap: 10px; }
+  .action-row { display: flex; flex-direction: column; gap: 7px; }
   .action-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 18px 18px;
+    padding: 14px 16px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--surface-border);
     background: var(--surface);
     color: var(--text);
     font-family: inherit;
-    font-size: calc(16px * var(--font-scale));
+    font-size: calc(14px * var(--font-scale));
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -927,7 +937,7 @@
 
   /* Responsive tweaks */
   @media (min-width: 600px) {
-    .hero h1 { font-size: calc(52px * var(--font-scale)); }
+    .hero h1 { font-size: calc(44px * var(--font-scale)); }
   }
 
 </style>
@@ -938,15 +948,13 @@
 
   <!-- ========== HOME VIEW ========== -->
   <div id="home-view">
-    <div class="header">
-      <div></div>
-      <button class="icon-btn" id="settings-btn" aria-label="Settings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-      </button>
-    </div>
-
     <div class="hero">
-      <h1>FASEA Exam<br/>Flip Cards</h1>
+      <div class="hero-title-wrap">
+        <h1>FASEA Exam<br/>Flip Cards</h1>
+        <button class="icon-btn" id="settings-btn" aria-label="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+      </div>
       <div class="accent-rule"></div>
       <p class="disclaimer">
         Not affiliated with ASIC, Treasury or any official examining body.
