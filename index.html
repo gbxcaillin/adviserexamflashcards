@@ -404,7 +404,7 @@
   .card-face.back .card-body-text[data-len="long"] { font-size: calc(11px * var(--font-scale)); line-height: 1.45; }
   .card-face.front .card-body-text {
     font-family: var(--serif);
-    font-size: calc(34px * var(--font-scale));
+    font-size: calc(26px * var(--font-scale));
     font-weight: 700;
     line-height: 1.2;
     color: #0F1E3D;
@@ -423,13 +423,15 @@
     line-height: 1.55;
     color: var(--cream-text);
   }
-  /* Question type back is the short answer - make it bigger/serif */
+  /* Question back — answer text, sized to match question front */
   .card-face.back.is-question .card-body-text {
     font-family: var(--sans);
-    font-size: calc(32px * var(--font-scale));
+    font-size: calc(20px * var(--font-scale));
     font-weight: 700;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
   }
+  .card-face.back.is-question .card-body-text[data-len="med"]  { font-size: calc(16px * var(--font-scale)); }
+  .card-face.back.is-question .card-body-text[data-len="long"] { font-size: calc(13px * var(--font-scale)); line-height: 1.45; }
   .card-face .tap-hint {
     position: absolute; bottom: 18px; left: 0; right: 0;
     text-align: center;
